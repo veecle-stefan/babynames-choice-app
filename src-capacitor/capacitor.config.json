@@ -1,0 +1,7 @@
+{
+  "appId": "de.nurnware.easynames",
+  "appName": "artpictures",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}
