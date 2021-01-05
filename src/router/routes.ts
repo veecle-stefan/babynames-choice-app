@@ -11,6 +11,11 @@ const routes: RouteConfig[] = [
         component: () => import('pages/Index.vue')
       },
       {
+        path: '/sound',
+        meta: { name: 'pages.sound' },
+        component: () => import('pages/sound.vue')
+      },
+      {
         path: '/settings',
         meta: { name: 'pages.settings' },
         component: () => import('pages/settings.vue')

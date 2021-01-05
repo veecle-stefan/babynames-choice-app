@@ -2,7 +2,7 @@
   <q-page class="q-pa-md backimg">
     <div class="fit row wrap justify-around items-center content-stretch">
       <div class="col-12 col-sm-6">
-      <img class=" applogo" src="graphics/picselart-text-only.png" />
+      <img class=" applogo" src="graphics/easynames.png" />
       </div>
       <div class="col-12 col-sm-6">
         <div class="text-h5">{{ $t('about.title')}}</div>
@@ -35,7 +35,21 @@ export default defineComponent({
 }
 
 .backimg {
-  background-image: url('/graphics/picselart-dots-only.png');
+  display: block;
+  position: relative;
+}
+
+.backimg:after {
+  content: "";
+  position: absolute;
+  background-image: url('/graphics/baby-logo.png');
   background-size: cover;
+  opacity: .1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;   
 }
 </style>

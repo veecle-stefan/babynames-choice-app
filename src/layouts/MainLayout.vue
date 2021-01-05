@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh lpR lFf">
 
-    <q-header elevated class="bg-primary text-white">
+    <q-header elevated class="text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
 
@@ -23,7 +23,7 @@
     :width="200"
     :breakpoint="500"
     bordered
-    content-class="bg-grey-3"
+    content-class="dark"
       >
         <q-scroll-area class="fit">
           <q-list padding v-for="m in menuItems" :key="m.link">
@@ -35,7 +35,9 @@
             :to="m.link"
             >
               <q-item-section avatar>
-                <q-icon :name="m.icon" />
+                <q-avatar square>
+                  <img :src="`icons/${m.img}.png`" />
+                </q-avatar>
               </q-item-section>
 
               <q-item-section>{{ $t(m.title) }}</q-item-section>
@@ -60,10 +62,12 @@ export default defineComponent({
       left: false,
       miniState: true,
       menuItems: [
-        { title: 'menu.loadpicture', icon: 'add_a_photo', link: '/' },
-        { title: 'menu.gallery', icon: 'photo_library', link: 'gallery', seperator: true },
-        { title: 'menu.settings', icon: 'settings', link: 'settings' },
-        { title: 'menu.about', icon: 'drag_indicator', link: 'about' }
+        { title: 'menu.overview', img: 'babyname', link: '/', seperator: true },
+        { title: 'menu.sound', img: 'phonetics', link: 'sound' },
+        { title: 'menu.family', img: 'family', link: 'family' },
+        { title: 'menu.database', img: 'database', link: 'database', seperator: true },
+        { title: 'menu.settings', img: 'settings', link: 'settings' },
+        { title: 'menu.about', img: 'about', link: 'about' }
       ]
     }
   }
@@ -71,8 +75,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.titleimg {
-  height: 150px;
+body.body--dark {
+  background: rgb(2,0,36);
+  background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(5,36,56,1) 35%, rgba(66,0,85,1) 100%);
 }
 
 .my-menu-link {
