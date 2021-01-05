@@ -18,7 +18,7 @@ export default {
     about: 'About'
   },
   methods: {
-    sound : {
+    sound: {
       title: '...by sound',
       sub: 'the phonetics',
       desc: 'Find out which phonetics you like and how many syllables. This makes up the sound of a name. It can be inviting, charming, positive, succint, melodic, ...'
@@ -27,7 +27,6 @@ export default {
       title: '...by family',
       sub: 'the siblings and ancestors',
       desc: 'A name you choose should match your family name or last name and should fit well to the siblings and the parent\'s first names. Here, you can also find fitting middle and second names.'
-  
     }
   },
   overview: {
