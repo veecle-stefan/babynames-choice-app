@@ -1,8 +1,8 @@
 {
-  "name": "artpictures-app",
+  "name": "babynames-app",
   "version": "0.0.1",
   "description": "Transform pictures into art",
-  "productName": "artpictures",
+  "productName": "babynames",
   "author": "Stefan Nuernberger",
   "private": true,
   "scripts": {
@@ -17,9 +17,11 @@
     "@types/cordova": "0.0.34",
     "@types/cordova-plugin-camera": "^2.4.0",
     "@vue/composition-api": "^0.6.4",
+    "class-transformer": "^0.3.1",
     "core-js": "^3.6.5",
     "croppie": "^2.6.5",
     "quasar": "^1.0.0",
+    "reflect-metadata": "^0.1.13",
     "vue-class-component": "^7.2.6",
     "vue-cropperjs": "^4.2.0",
     "vue-croppie": "^2.0.2",

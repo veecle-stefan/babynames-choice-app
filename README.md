@@ -1,6 +1,6 @@
-# artpictures (artpictures-app)
+# Baby Names (babynames-app)
 
-Transform pictures into art
+Easily find baby names
 
 ## Install the dependencies
 ```bash

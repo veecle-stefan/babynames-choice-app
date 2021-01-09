@@ -7,6 +7,7 @@ export default {
   },
   pages: {
     index: 'Overview',
+    sound: 'Sound',
     about: 'About'
   },
   menu: {

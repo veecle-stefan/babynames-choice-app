@@ -1,6 +1,6 @@
 {
   "appId": "de.nurnware.easynames",
-  "appName": "artpictures",
+  "appName": "Easy Baby Names",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www"

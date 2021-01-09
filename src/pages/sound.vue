@@ -10,7 +10,9 @@
       <div class="col-12">
         Klang: Scrollrad mit Anfangsbuchstabe, dann 2-5 hoch/tief Silben, dann Endbuchstabe
       </div>
-    <namecard :name="testName()"/>
+      <div class="col-5" v-for="name in testNames()" :key="name.spellings[0].syllables.formattedName">
+        <namecard :name="name"/>
+      </div>
     </div>
   </q-page>
 </template>
@@ -24,8 +26,14 @@ import { BabyDatabase, BabyName } from '../babynames'
   components: { Namecard }
 })
 export default class Sound extends Vue {
-  testName (): BabyName {
-    return BabyDatabase.allNames[0]
+  testNames (): BabyName[] {
+    const size = 10
+    const result: BabyName[] = []
+    for (let i = 0; i < size; i++) {
+      const num = Math.round(Math.random() * BabyDatabase.allNames.length)
+      result.push(BabyDatabase.allNames[num])
+    }
+    return result
   }
 }
 </script>

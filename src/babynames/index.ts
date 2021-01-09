@@ -1,2 +1,1 @@
-export * from './nameclusters'
-export * from './babyname'
+export * from './babynames'
