@@ -134,7 +134,7 @@ module.exports = configure(function (ctx) {
       manifest: {
         name: 'easynames',
         short_name: 'easynames',
-        description: 'Transform pictures into art',
+        description: 'Easily find baby names',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

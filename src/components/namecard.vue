@@ -24,6 +24,13 @@
           <li v-for="k in name.keywords" :key="k">{{k}}</li>
         </ul>
       </q-card-section>
+      <q-separator dark inset />
+
+      <q-card-section>
+        <ul>
+          <li v-for="d in name.indic" :key="d">{{d}}</li>
+        </ul>
+      </q-card-section>
     </q-card>
   </div>
 </template>

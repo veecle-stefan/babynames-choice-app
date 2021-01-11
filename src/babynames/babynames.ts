@@ -72,6 +72,9 @@ export class BabyName {
 
   @Type(() => Number)
   relatedNameClusters = new Array<number>(0);
+
+  @Type(() => String)
+  indic = new Array<string>(0);
 }
 
 class TBabyDatabase {
