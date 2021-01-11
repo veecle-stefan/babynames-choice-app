@@ -1,6 +1,6 @@
 <template>
   <div>
-   <q-card dark bordered class="bg-grey-10 my-card">
+   <q-card dark bordered class="my-card">
       <q-card-section>
         <div class="mainname">
           <span v-for="s in defaultDisplayName.syllables.ToneSyllables" :key="s.chars" :class="`syllable syl-color-${s.tone}`">{{ s.chars }}</span>
@@ -20,8 +20,8 @@
       <q-separator dark inset />
 
       <q-card-section>
-        <ul v-for="k in name.keywords" :key="k">
-          <li>{{k}}</li>
+        <ul>
+          <li v-for="k in name.keywords" :key="k">{{k}}</li>
         </ul>
       </q-card-section>
     </q-card>
@@ -82,19 +82,32 @@ export default class Namecard extends Vue {
 </script>
 
 <style lang="scss">
+
+.my-card {
+  background: rgba( 255, 255, 255, 0.30 );
+  box-shadow: 0 8px 50px 0 rgba( 31, 38, 135, 0.57 );
+  backdrop-filter: blur( 10px ) grayscale(.5);
+  border-radius: 10px;
+  border: 2px solid rgba( 255, 255, 255, 0.1 );
+}
+
 .mainname {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 20pt;
   display: block;
 }
 
 .syllable {
-  display: inline;
+  display: inline-block;
   margin-left: 0;
   margin-right: 0;
   padding-left: 0;
   padding-right: 0;
   border-radius: 5px;
+  background-size: 100% 100%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  height: 64px;
 }
 
 .mainname span + span:before {
@@ -109,23 +122,25 @@ export default class Namecard extends Vue {
 }
 
 .syl-color-4 {
-  background-color: rgba(255, 0, 0, 0.2);
+  //background-color: rgba(255, 0, 0, 0.2);
+  background-image: url('/icons/tones/high1.png');
 }
 .syl-color-8 {
-  background-color: rgba(255, 0, 0, 0.3);
+  background-image: url('/icons/tones/high2.png');
 }
 .syl-color-12 {
-  background-color: rgba(255, 0, 0, 0.5);
+  background-image: url('/icons/tones/high3.png');
 }
 .syl-color-1 {
-  background-color: rgba(0, 0, 255, 0.2);
+  //background-color: rgba(0, 0, 255, 0.2);
+  background-image: url('/icons/tones/low1.png');
 }
 .syl-color-2 {
-  background-color: rgba(0, 0, 255, 0.3);
+  background-image: url('/icons/tones/low2.png');
 }
 
 .syl-color-5 {
-  background-color: rgba(255, 0, 255, 0.2);
+  background-image: url('/icons/tones/hl1.png');
 }
 
 .altspelling {
