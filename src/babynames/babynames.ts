@@ -15,9 +15,21 @@ export enum Origin {
   Portoguese = 'pt'
 }
 
+export enum DictLang {
+  EN = 1,
+  DE = 2,
+  FR = 4,
+  IT = 8,
+  ES = 16
+}
+
 export interface ToneSyllable {
   chars: string
   tone: number
+}
+
+export interface DictionaryWord {
+  [word: string]: number;
 }
 
 export class Syllables {
@@ -73,16 +85,28 @@ export class BabyName {
   @Type(() => Number)
   relatedNameClusters = new Array<number>(0);
 
-  @Type(() => String)
-  indic = new Array<string>(0);
+  @Type(() => Object)
+  indic: DictionaryWord = {};
+
+  public getShortestName (): RawSpelling {
+    // take the shortest name
+    const shortest = this.spellings.reduce((shortest: RawSpelling | null, s) => {
+      if ((shortest === null) || (s.syllables.length < shortest.syllables.length)) {
+        shortest = s
+      }
+      return shortest
+    }, null)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return shortest!
+  }
 }
 
-class TBabyDatabase {
+export class TBabyDatabase {
   public readonly allNames: Array<BabyName>
 
   constructor () {
     this.allNames = []
-    const typedClusters = rawClusters as BabyName[]
+    const typedClusters = rawClusters as Record<string, unknown>[]
     for (let clusterID = 0; clusterID < typedClusters.length; clusterID++) {
       const cluster = typedClusters[clusterID]
       this.allNames[clusterID] = plainToClass(BabyName, cluster)

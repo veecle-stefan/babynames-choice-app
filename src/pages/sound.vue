@@ -27,12 +27,17 @@ import { BabyDatabase, BabyName } from '../babynames'
 })
 export default class Sound extends Vue {
   testNames (): BabyName[] {
-    const size = 10
     const result: BabyName[] = []
-    for (let i = 0; i < size; i++) {
-      const num = Math.round(Math.random() * BabyDatabase.allNames.length)
-      result.push(BabyDatabase.allNames[num])
-    }
+    do {
+      const num = Math.floor(Math.random() * BabyDatabase.allNames.length)
+      const newName = BabyDatabase.allNames[num]
+      if (Object.keys(newName.indic).length === 0) {
+        continue
+      }
+      if (!result.includes(newName)) {
+        result.push(newName)
+      }
+    } while (result.length < 10)
     return result
   }
 }

@@ -10,6 +10,11 @@ export default {
     sound: 'Sound',
     about: 'About'
   },
+  names: {
+    keywords: 'Meaning',
+    dictionarywords: 'Similar words in the dictionary',
+    related: 'Related names'
+  },
   menu: {
     overview: 'Overview',
     sound: 'Choose by Sound',

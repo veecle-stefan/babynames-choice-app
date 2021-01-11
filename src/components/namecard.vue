@@ -20,15 +20,23 @@
       <q-separator dark inset />
 
       <q-card-section>
+        <div class="text-h5">{{ $t('names.keywords') }}</div>
         <ul>
           <li v-for="k in name.keywords" :key="k">{{k}}</li>
         </ul>
       </q-card-section>
       <q-separator dark inset />
-
-      <q-card-section>
+      <q-card-section v-if="Object.keys(name.indic).length > 0">
+        <div class="text-h5">{{ $t('names.dictionarywords') }}</div>
         <ul>
-          <li v-for="d in name.indic" :key="d">{{d}}</li>
+          <li v-for="d in Object.keys(name.indic)" :key="d">{{d}}</li>
+        </ul>
+      </q-card-section>
+      <q-separator dark inset />
+      <q-card-section v-if="name.relatedNameClusters.length > 0">
+        <div class="text-h5">{{ $t('names.related') }}</div>
+        <ul>
+          <li v-for="r in name.relatedNameClusters" :key="r">{{babyDB.allNames[r].getShortestName().syllables.formattedName}}</li>
         </ul>
       </q-card-section>
     </q-card>
@@ -37,7 +45,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { BabyName, RawSpelling } from '../babynames'
+import { BabyDatabase, BabyName, RawSpelling, TBabyDatabase } from '../babynames'
 
 class AltSpelling {
   id: number
@@ -61,10 +69,12 @@ export default class Namecard extends Vue {
 
   alternativeSpellings: AltSpelling[]
   defaultDisplayName: RawSpelling
+  babyDB: TBabyDatabase
 
   constructor () {
     super()
-    this.defaultDisplayName = this.getShortestName()
+    this.babyDB = BabyDatabase
+    this.defaultDisplayName = this.name.getShortestName()
     this.alternativeSpellings = this.getAlternatives(this.defaultDisplayName)
   }
 
@@ -72,18 +82,6 @@ export default class Namecard extends Vue {
     return this.name.spellings.filter(s => s !== notThis).map((m, i) => {
       return new AltSpelling(i, m.syllables.formattedName, m.origins, m.gender)
     })
-  }
-
-  getShortestName (): RawSpelling {
-    // take the shortest name
-    const shortest = this.name.spellings.reduce((shortest: RawSpelling | null, s) => {
-      if ((shortest === null) || (s.syllables.length < shortest.syllables.length)) {
-        shortest = s
-      }
-      return shortest
-    }, null)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return shortest!
   }
 }
 </script>
