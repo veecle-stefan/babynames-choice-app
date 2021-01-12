@@ -88,7 +88,12 @@ export class BabyName {
   @Type(() => Object)
   indic: DictionaryWord = {};
 
-  public getShortestName (): RawSpelling {
+  /**
+   * Selects one spelling for display. Could just be
+   * the first in the list, but is currently calculating
+   * the shortest name to display
+   */
+  public getDefaultSpelling (): RawSpelling {
     // take the shortest name
     const shortest = this.spellings.reduce((shortest: RawSpelling | null, s) => {
       if ((shortest === null) || (s.syllables.length < shortest.syllables.length)) {
@@ -98,6 +103,10 @@ export class BabyName {
     }, null)
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return shortest!
+  }
+
+  public getOtherSpellings (notThis: RawSpelling): RawSpelling[] {
+    return this.spellings.filter(s => s !== notThis)
   }
 }
 

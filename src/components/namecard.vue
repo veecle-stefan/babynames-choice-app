@@ -1,22 +1,25 @@
 <template>
   <div>
-   <q-card dark bordered class="my-card">
+   <q-card bordered class="my-card">
       <q-card-section>
-        <q-btn no-caps flat>
-           <div class="mainname">
-          <span v-for="s in defaultDisplayName.syllables.ToneSyllables" :key="s.chars" :class="`syllable syl-color-${s.tone}`">{{ s.chars }}</span>
-          <div class="flagspace"></div>
-          <div v-for="flag in defaultDisplayName.origins" :key="flag" class="flag" :style="{ 'background-image': `url('/icons/flags/${flag}.png`}"></div>
-        </div>
-      <q-menu>
-        <q-chip outline v-for="spelling in alternativeSpellings" :key="spelling.id">
-          <q-avatar v-for="flag in spelling.origins" :key="flag">
-            <div  class="flag" :style="{ 'background-image': `url('/icons/flags/${flag}.png`}"></div>
-          </q-avatar>
-          {{ spelling.name }}
-        </q-chip>
-      </q-menu>
-        </q-btn>
+        <q-expansion-item
+        v-if="alternativeSpellings.length > 0"
+        expand-icon-toggle
+        >
+        <template v-slot:header>
+          <name-flag :origincode="defaultDisplayName.origins[0]" />
+          <name-spelling :name="defaultDisplayName" />
+        </template>
+          <q-card class="spellcard">
+            <q-card-section>
+              <alt-spellings :spellings="alternativeSpellings" />
+            </q-card-section>
+          </q-card>
+        </q-expansion-item>
+        <q-item v-else>
+          <name-flag :origincode="defaultDisplayName.origins[0]" />
+          <name-spelling :name="defaultDisplayName" />
+        </q-item>
       </q-card-section>
 
       <q-separator dark inset />
@@ -51,9 +54,7 @@
       <q-separator dark inset />
       <q-card-section v-if="name.relatedNameClusters.length > 0">
         <div class="text-h5">{{ $t('names.related') }}</div>
-        <div class="q-gutter-sm">
-          <q-btn no-caps v-for="r in name.relatedNameClusters" :key="r">{{babyDB.allNames[r].getShortestName().syllables.formattedName}}</q-btn>
-        </div>
+        <related-names :clusters="name.relatedNameClusters" />
       </q-card-section>
     </q-card>
   </div>
@@ -61,52 +62,36 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { BabyDatabase, BabyName, RawSpelling, TBabyDatabase } from '../babynames'
+import { BabyName, RawSpelling } from '../babynames'
+import NameSpelling from '../components/name-spelling.vue'
+import NameFlag from '../components/name-flag.vue'
+import AltSpellings from '../components/alt-spellings.vue'
+import RelatedNames from '../components/related-names.vue'
 
-class AltSpelling {
-  id: number
-  name: string
-  origins: string[]
-  gender: string
-
-  constructor (id: number, name: string, origins: string[], gender: string) {
-    this.id = id
-    this.name = name
-    this.origins = origins
-    this.gender = gender
-  }
-}
-
-@Component
+@Component({
+  components: { NameFlag, NameSpelling, AltSpellings, RelatedNames }
+})
 export default class Namecard extends Vue {
   @Prop({ required: false, default: 100 }) readonly width!: number
   @Prop({ required: false, default: 300 }) readonly height!: number
   @Prop({ required: true }) readonly name!: BabyName
 
-  alternativeSpellings: AltSpelling[]
+  alternativeSpellings: RawSpelling[]
   defaultDisplayName: RawSpelling
   allSpellings: string[]
   dictionaryWords: string[]
-  babyDB: TBabyDatabase
 
   constructor () {
     super()
-    this.babyDB = BabyDatabase
-    this.defaultDisplayName = this.name.getShortestName()
-    this.alternativeSpellings = this.getAlternatives(this.defaultDisplayName)
+    this.defaultDisplayName = this.name.getDefaultSpelling()
+    this.alternativeSpellings = this.name.getOtherSpellings(this.defaultDisplayName)
 
     // fill all spellings array
     this.allSpellings = [this.defaultDisplayName.syllables.formattedName]
-    this.alternativeSpellings.forEach(s => this.allSpellings.push(s.name))
+    this.alternativeSpellings.forEach(s => this.allSpellings.push(s.syllables.formattedName))
 
     // fill dictionary words
     this.dictionaryWords = Object.keys(this.name.indic).filter(d => !this.allSpellings.includes(d))
-  }
-
-  getAlternatives (notThis: RawSpelling): AltSpelling[] {
-    return this.name.spellings.filter(s => s !== notThis).map((m, i) => {
-      return new AltSpelling(i, m.syllables.formattedName, m.origins, m.gender)
-    })
   }
 }
 </script>
@@ -121,10 +106,16 @@ export default class Namecard extends Vue {
   border: 2px solid rgba( 255, 255, 255, 0.1 );
 }
 
+.spellcard {
+  color: red;
+  background-color: transparent;
+}
+
 .mainname {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20pt;
   display: block;
+  color: #444444;
 }
 
 .syllable {
@@ -143,8 +134,7 @@ export default class Namecard extends Vue {
 .mainname span + span:before {
   font-size: 12pt;
   opacity: .2;
-  content: '';
-  border-right: dotted 1px black;
+  content: '•';
   overflow: hidden;
   width: 5px;
   max-width: 5px;
