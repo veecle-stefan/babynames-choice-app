@@ -3,7 +3,7 @@
    <q-card bordered class="my-card">
       <q-card-section>
         <q-expansion-item
-        v-if="alternativeSpellings.length > 0"
+        v-if="currentName.spellings.length > 1"
         expand-icon-toggle
         >
         <template v-slot:header>
@@ -12,7 +12,7 @@
         </template>
           <q-card class="spellcard">
             <q-card-section>
-              <alt-spellings :spellings="alternativeSpellings" />
+              <alt-spellings :spellings="currentName.spellings" :without="[defaultDisplayName]" @spelling-chosen="spellingChosen"/>
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -24,7 +24,7 @@
 
       <q-separator dark inset />
 
-      <q-card-section v-if="name.keywords.length > 0">
+      <q-card-section v-if="currentName.keywords.length > 0">
         <div class="row no-wrap q-pa-md">
           <div class="column justify-center">
             <div class="text-h6 q-mb-md">{{ $t('names.keywords') }}</div>
@@ -32,7 +32,7 @@
           <q-separator vertical inset class="q-mx-lg" />
           <div class="column items-center">
           <ul>
-            <li v-for="k in name.keywords" :key="k">{{k}}</li>
+            <li v-for="k in currentName.keywords" :key="k">{{k}}</li>
           </ul>
           </div>
         </div>
@@ -46,15 +46,15 @@
           <q-separator vertical inset class="q-mx-lg" />
           <div class="column items-center">
           <ul>
-            <li v-for="d in dictionaryWords" :key="d">{{d}}</li>
+            <li v-for="d in dictionaryWords()" :key="d">{{d}}</li>
           </ul>
           </div>
         </div>
       </q-card-section>
       <q-separator dark inset />
-      <q-card-section v-if="name.relatedNameClusters.length > 0">
+      <q-card-section v-if="currentName.relatedNameClusters.length > 0">
         <div class="text-h5">{{ $t('names.related') }}</div>
-        <related-names :clusters="name.relatedNameClusters" />
+        <related-names :clusters="currentName.relatedNameClusters" @related-clicked="relatedNameClicked"/>
       </q-card-section>
     </q-card>
   </div>
@@ -76,22 +76,34 @@ export default class Namecard extends Vue {
   @Prop({ required: false, default: 300 }) readonly height!: number
   @Prop({ required: true }) readonly name!: BabyName
 
-  alternativeSpellings: RawSpelling[]
+  currentName: BabyName
   defaultDisplayName: RawSpelling
-  allSpellings: string[]
-  dictionaryWords: string[]
 
   constructor () {
     super()
-    this.defaultDisplayName = this.name.getDefaultSpelling()
-    this.alternativeSpellings = this.name.getOtherSpellings(this.defaultDisplayName)
+    this.currentName = this.name
+    this.defaultDisplayName = this.currentName.getDefaultSpelling()
+  }
 
+  dictionaryWords ():string[] {
     // fill all spellings array
-    this.allSpellings = [this.defaultDisplayName.syllables.formattedName]
-    this.alternativeSpellings.forEach(s => this.allSpellings.push(s.syllables.formattedName))
-
+    const allSpellings = this.currentName.spellings.map(s => s.syllables.formattedName)
     // fill dictionary words
-    this.dictionaryWords = Object.keys(this.name.indic).filter(d => !this.allSpellings.includes(d))
+    return Object.keys(this.currentName.indic).filter(d => !allSpellings.includes(d))
+  }
+
+  /**
+   * User has clicked on an alternative spelling. Set this one
+   * as the current default spelling in the top and remove
+   * it from the list of alternative spellings
+   */
+  spellingChosen (s: RawSpelling) {
+    this.defaultDisplayName = s
+  }
+
+  relatedNameClicked (n: BabyName) {
+    this.currentName = n
+    this.defaultDisplayName = this.currentName.getDefaultSpelling()
   }
 }
 </script>

@@ -104,10 +104,6 @@ export class BabyName {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return shortest!
   }
-
-  public getOtherSpellings (notThis: RawSpelling): RawSpelling[] {
-    return this.spellings.filter(s => s !== notThis)
-  }
 }
 
 export class TBabyDatabase {

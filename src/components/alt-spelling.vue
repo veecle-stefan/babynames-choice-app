@@ -1,5 +1,5 @@
 <template>
-<q-btn outline no-caps size="md" align="between" color="white">
+<q-btn outline no-caps size="md" align="between" color="white" @click="$emit('click')">
   <q-avatar v-if="firstflagonly">
     <img :src="`/icons/flags/${spelling.origins[0]}.png`" />
   </q-avatar>
