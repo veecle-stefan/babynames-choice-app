@@ -79,6 +79,7 @@ body.body--dark {
   //background: rgb(2,0,36);
   //background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(5,36,56,1) 35%, rgba(66,0,85,1) 100%);
   background-image: url('/graphics/backgradient.jpg');
+  background-size: cover;
   background-attachment: fixed;
 }
 

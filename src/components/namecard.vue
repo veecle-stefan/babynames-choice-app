@@ -2,42 +2,58 @@
   <div>
    <q-card dark bordered class="my-card">
       <q-card-section>
-        <div class="mainname">
+        <q-btn no-caps flat>
+           <div class="mainname">
           <span v-for="s in defaultDisplayName.syllables.ToneSyllables" :key="s.chars" :class="`syllable syl-color-${s.tone}`">{{ s.chars }}</span>
           <div class="flagspace"></div>
           <div v-for="flag in defaultDisplayName.origins" :key="flag" class="flag" :style="{ 'background-image': `url('/icons/flags/${flag}.png`}"></div>
         </div>
-        <div class="text-subtitle2">
-          <div class="altspelling" v-for="spelling in alternativeSpellings" :key="spelling.id">
-            {{ spelling.name }}
-            <q-tooltip>
-            <div v-for="flag in spelling.origins" :key="flag" class="flag" :style="{ 'background-image': `url('/icons/flags/${flag}.png`}"></div>
-            </q-tooltip>
+      <q-menu>
+        <q-chip outline v-for="spelling in alternativeSpellings" :key="spelling.id">
+          <q-avatar v-for="flag in spelling.origins" :key="flag">
+            <div  class="flag" :style="{ 'background-image': `url('/icons/flags/${flag}.png`}"></div>
+          </q-avatar>
+          {{ spelling.name }}
+        </q-chip>
+      </q-menu>
+        </q-btn>
+      </q-card-section>
+
+      <q-separator dark inset />
+
+      <q-card-section v-if="name.keywords.length > 0">
+        <div class="row no-wrap q-pa-md">
+          <div class="column justify-center">
+            <div class="text-h6 q-mb-md">{{ $t('names.keywords') }}</div>
+          </div>
+          <q-separator vertical inset class="q-mx-lg" />
+          <div class="column items-center">
+          <ul>
+            <li v-for="k in name.keywords" :key="k">{{k}}</li>
+          </ul>
           </div>
         </div>
       </q-card-section>
-
       <q-separator dark inset />
-
-      <q-card-section>
-        <div class="text-h5">{{ $t('names.keywords') }}</div>
-        <ul>
-          <li v-for="k in name.keywords" :key="k">{{k}}</li>
-        </ul>
-      </q-card-section>
-      <q-separator dark inset />
-      <q-card-section v-if="Object.keys(name.indic).length > 0">
-        <div class="text-h5">{{ $t('names.dictionarywords') }}</div>
-        <ul>
-          <li v-for="d in Object.keys(name.indic)" :key="d">{{d}}</li>
-        </ul>
+      <q-card-section v-if="dictionaryWords.length > 0">
+       <div class="row no-wrap q-pa-md">
+          <div class="column justify-center">
+            <div class="text-h6 q-mb-md">{{ $t('names.dictionarywords') }}</div>
+          </div>
+          <q-separator vertical inset class="q-mx-lg" />
+          <div class="column items-center">
+          <ul>
+            <li v-for="d in dictionaryWords" :key="d">{{d}}</li>
+          </ul>
+          </div>
+        </div>
       </q-card-section>
       <q-separator dark inset />
       <q-card-section v-if="name.relatedNameClusters.length > 0">
         <div class="text-h5">{{ $t('names.related') }}</div>
-        <ul>
-          <li v-for="r in name.relatedNameClusters" :key="r">{{babyDB.allNames[r].getShortestName().syllables.formattedName}}</li>
-        </ul>
+        <div class="q-gutter-sm">
+          <q-btn no-caps v-for="r in name.relatedNameClusters" :key="r">{{babyDB.allNames[r].getShortestName().syllables.formattedName}}</q-btn>
+        </div>
       </q-card-section>
     </q-card>
   </div>
@@ -69,6 +85,8 @@ export default class Namecard extends Vue {
 
   alternativeSpellings: AltSpelling[]
   defaultDisplayName: RawSpelling
+  allSpellings: string[]
+  dictionaryWords: string[]
   babyDB: TBabyDatabase
 
   constructor () {
@@ -76,6 +94,13 @@ export default class Namecard extends Vue {
     this.babyDB = BabyDatabase
     this.defaultDisplayName = this.name.getShortestName()
     this.alternativeSpellings = this.getAlternatives(this.defaultDisplayName)
+
+    // fill all spellings array
+    this.allSpellings = [this.defaultDisplayName.syllables.formattedName]
+    this.alternativeSpellings.forEach(s => this.allSpellings.push(s.name))
+
+    // fill dictionary words
+    this.dictionaryWords = Object.keys(this.name.indic).filter(d => !this.allSpellings.includes(d))
   }
 
   getAlternatives (notThis: RawSpelling): AltSpelling[] {
@@ -89,8 +114,8 @@ export default class Namecard extends Vue {
 <style lang="scss">
 
 .my-card {
-  background: rgba( 255, 255, 255, 0.30 );
-  box-shadow: 0 8px 50px 0 rgba( 31, 38, 135, 0.57 );
+  background: rgba( 255, 255, 255, 0.10 );
+  box-shadow: 0 8px 50px 0 rgba(66, 63, 45, 0.57);
   backdrop-filter: blur( 10px ) grayscale(.5);
   border-radius: 10px;
   border: 2px solid rgba( 255, 255, 255, 0.1 );
@@ -112,7 +137,7 @@ export default class Namecard extends Vue {
   background-size: 100% 100%;
   background-position: center bottom;
   background-repeat: no-repeat;
-  height: 64px;
+  height: 48px;
 }
 
 .mainname span + span:before {

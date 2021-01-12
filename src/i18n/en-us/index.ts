@@ -12,7 +12,7 @@ export default {
   },
   names: {
     keywords: 'Meaning',
-    dictionarywords: 'Similar words in the dictionary',
+    dictionarywords: 'Similar words',
     related: 'Related names'
   },
   menu: {
