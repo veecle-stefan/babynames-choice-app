@@ -1,24 +1,39 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="q-pa-md row items-start q-gutter-md">
       <q-stepper
       v-model="step"
       vertical
-      color="primary"
       animated
     >
       <q-step
         :name="1"
-        title="Select campaign settings"
+        :title="$t('wizard.familyname.title')"
+        color="secondary"
         icon="settings"
         :done="step > 1"
       >
-        For each ad campaign that you create, you can control how much you're willing to
-        spend on clicks and conversions, which networks and geographical locations you want
-        your ads to show on, and more.
-
+      <div class="q-gutter-y-md column" style="max-width: 400px">
+          <q-input v-model="query.familyname" :label="$t('wizard.familyname.name')" :hint="$t('wizard.familyname.desc')" />
+          <q-input v-for="(s, index) in query.siblings" :key="s.ID" v-model="s.firstname" :suffix="query.familyname" :label="$t('wizard.sibling.name')" :hint="$t('wizard.sibling.desc')">
+            <template v-slot:append>
+              <q-btn dense icon="person_remove" @click="removeSibling(index)" />
+            <q-btn-toggle
+            push
+            dense
+            v-model="s.gender"
+            rounded
+            :options="genderOptions"
+            >
+              <template v-for="o in genderOptions" v-slot:[o.slot]>
+                <q-img :key="o.slot" class="genderpicker" :src="`/icons/${o.slot}.png`" @click="s.gender = o.value" />
+              </template>
+            </q-btn-toggle>
+            </template>
+          </q-input>
+          <q-btn icon="person_add" color="primary" :label="$t('wizard.sibling.add')" @click="addSibling" />
+      </div>
         <q-stepper-navigation>
-          <q-btn @click="step = 2" color="primary" label="Continue" />
+          <q-btn @click="step = 2" color="secondary" label="Continue" />
         </q-stepper-navigation>
       </q-step>
 
@@ -33,7 +48,7 @@
 
         <q-stepper-navigation>
           <q-btn @click="step = 4" color="primary" label="Continue" />
-          <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
+          <q-btn flat @click="step = 1"  label="Back" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
 
@@ -61,6 +76,7 @@
         </q-stepper-navigation>
       </q-step>
     </q-stepper>
+    <div class="row items-start q-gutter-md">
       <div class="col-12">
         Familienname
       </div>
@@ -80,31 +96,37 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import Namecard from '../components/namecard.vue'
-import { BabyDatabase, BabyName } from '../babynames'
+import { BabyDatabase, BabyName, Family } from '../babynames'
 
 @Component({
   components: { Namecard }
 })
 export default class Sound extends Vue {
   step = 1
+  query = new Family()
+  genderOptions = [
+    { value: 'f', slot: 'genderf' },
+    { value: 'u', slot: 'genderu' },
+    { value: 'm', slot: 'genderm' }
+  ]
+
+  removeSibling (idx: number) {
+    this.query.siblings.splice(idx, 1)
+  }
+
+  addSibling () {
+    this.query.addSibling()
+  }
 
   testNames (): BabyName[] {
-    const result: BabyName[] = []
-    do {
-      const num = Math.floor(Math.random() * BabyDatabase.allNames.length)
-      const newName = BabyDatabase.allNames[num]
-      if (Object.keys(newName.indic).length === 0) {
-        continue
-      }
-      if (!result.includes(newName)) {
-        result.push(newName)
-      }
-    } while (result.length < 10)
-    return result
+    return [BabyDatabase.allNames[0]]
   }
 }
 </script>
 
 <style lang="scss">
-
+.genderpicker {
+  width: 24px;
+  height: 24px;
+}
 </style>

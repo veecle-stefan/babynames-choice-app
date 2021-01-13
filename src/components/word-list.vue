@@ -11,7 +11,7 @@
     </q-item>
     <q-separator vertical spaced />
   </template>
-    <template v-slot="{ item, index }">
+    <template v-slot="{ item }">
        <q-item dense>
       <q-item-section>
       <q-item-label class="list-item">{{ item }}</q-item-label>

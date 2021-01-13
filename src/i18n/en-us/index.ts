@@ -15,6 +15,22 @@ export default {
     dictionarywords: 'Similar words',
     related: 'Related names'
   },
+  wizard: {
+    familyname: {
+      name: 'Family name',
+      title: 'Family name',
+      desc: 'Enter your familiy name to limit matches to names that fit your name.'
+    },
+    sibling: {
+      add: 'Add sibling',
+      name: 'Sibling',
+      title: 'Other children (siblings)',
+      desc: 'Enter siblings of the name you want to find. Either existing children or names of siblings you alread to assign.'
+    },
+    brother: 'Brother',
+    sister: 'Sister',
+    unisex: 'Unisex'
+  },
   menu: {
     overview: 'Overview',
     sound: 'Choose by Sound',

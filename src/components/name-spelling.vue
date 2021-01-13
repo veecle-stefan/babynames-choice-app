@@ -1,14 +1,12 @@
 <template>
-  <q-item-section>
-    <div class="text-h5">
-    {{ name.syllables.formattedName }}
+  <div class="text-h5">
+  {{ name.syllables.formattedName }}
+  <q-tooltip content-class="bg-white" anchor="center left" self="center left">
+    <div class="mainname">
+      <span v-for="s in name.syllables.ToneSyllables" :key="s.chars" :class="`syllable syl-color-${s.tone}`">{{ s.chars }}</span>
     </div>
-    <q-tooltip content-class="bg-white" anchor="center left" self="center left">
-      <div class="mainname">
-        <span v-for="s in name.syllables.ToneSyllables" :key="s.chars" :class="`syllable syl-color-${s.tone}`">{{ s.chars }}</span>
-      </div>
-    </q-tooltip>
-  </q-item-section>
+  </q-tooltip>
+  </div>
 </template>
 
 <script lang="ts">
