@@ -88,6 +88,7 @@ module.exports = configure(function (ctx) {
     devServer: {
       https: false,
       port: 8080,
+      host: '0.0.0.0',
       open: 'Google Chrome'
     },
 

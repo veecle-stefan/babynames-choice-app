@@ -3,6 +3,7 @@
    <q-card bordered class="my-card">
       <q-card-section>
         <q-expansion-item
+        default-opened
         v-if="currentName.spellings.length > 1"
         expand-icon-toggle
         >
@@ -25,31 +26,11 @@
       <q-separator dark inset />
 
       <q-card-section v-if="currentName.keywords.length > 0">
-        <div class="row no-wrap q-pa-md">
-          <div class="column justify-center">
-            <div class="text-h6 q-mb-md">{{ $t('names.keywords') }}</div>
-          </div>
-          <q-separator vertical inset class="q-mx-lg" />
-          <div class="column items-center">
-          <ul>
-            <li v-for="k in currentName.keywords" :key="k">{{k}}</li>
-          </ul>
-          </div>
-        </div>
+        <word-list :list="currentName.keywords" :title="$t('names.keywords')" />
       </q-card-section>
       <q-separator dark inset />
-      <q-card-section v-if="dictionaryWords.length > 0">
-       <div class="row no-wrap q-pa-md">
-          <div class="column justify-center">
-            <div class="text-h6 q-mb-md">{{ $t('names.dictionarywords') }}</div>
-          </div>
-          <q-separator vertical inset class="q-mx-lg" />
-          <div class="column items-center">
-          <ul>
-            <li v-for="d in dictionaryWords()" :key="d">{{d}}</li>
-          </ul>
-          </div>
-        </div>
+      <q-card-section v-if="dictionaryWords().length > 0">
+       <word-list :list="dictionaryWords()" :title="$t('names.dictionarywords')" />
       </q-card-section>
       <q-separator dark inset />
       <q-card-section v-if="currentName.relatedNameClusters.length > 0">
@@ -67,9 +48,10 @@ import NameSpelling from '../components/name-spelling.vue'
 import NameFlag from '../components/name-flag.vue'
 import AltSpellings from '../components/alt-spellings.vue'
 import RelatedNames from '../components/related-names.vue'
+import WordList from '../components/word-list.vue'
 
 @Component({
-  components: { NameFlag, NameSpelling, AltSpellings, RelatedNames }
+  components: { NameFlag, NameSpelling, AltSpellings, RelatedNames, WordList }
 })
 export default class Namecard extends Vue {
   @Prop({ required: false, default: 100 }) readonly width!: number
@@ -113,9 +95,9 @@ export default class Namecard extends Vue {
 .my-card {
   background: rgba( 255, 255, 255, 0.10 );
   box-shadow: 0 8px 50px 0 rgba(66, 63, 45, 0.57);
-  backdrop-filter: blur( 10px ) grayscale(.5);
+  backdrop-filter: blur( 10px ) grayscale(.6);
   border-radius: 10px;
-  border: 2px solid rgba( 255, 255, 255, 0.1 );
+  border: 1px solid rgba( 255, 255, 255, 0.2 );
 }
 
 .spellcard {
