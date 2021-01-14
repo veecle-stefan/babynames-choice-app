@@ -27,7 +27,7 @@
 
       <q-step
         :name="2"
-        title="Siblings"
+        :title="$t('wizard.sibling.add')"
         caption="The existing sistor or brother of the newborn"
         icon="person_add"
         :done="step > 2"
@@ -56,18 +56,41 @@
           <q-btn icon="person_add" color="primary" :label="$t('wizard.sibling.add')" @click="addSibling" />
         </div>
         <q-stepper-navigation>
-          <q-btn @click="step = 4" color="primary" :label="query.siblings.length > 0 ? $t('wizard.continue.multiplesiblings') : $t('wizard.continue.nosiblings')" />
+          <q-btn @click="step = 3" color="primary" :label="query.siblings.length > 0 ? $t('wizard.continue.multiplesiblings') : $t('wizard.continue.nosiblings')" />
           <q-btn flat @click="step = 1"  :label="$t('wizard.back')" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
 
       <q-step
         :name="3"
-        title="Ad template"
-        icon="assignment"
-        disable
+        :title="$t('wizard.sound.choose')"
+        icon="hearing"
       >
-        This step won't show up because it is disabled.
+      <div class="row">
+        <div class="column justify-start items-start content-start" v-for="s in query.sound" :key="s.syllable">
+        <q-slider
+          v-model="s.sound"
+          vertical
+          :min="0"
+          :max="2"
+          :step="1"
+          snap
+          reverse
+          label-always
+          :label-value="s.sound == 0 ? $t('wizard.sound.low') : s.sound == 1 ? $t('wizard.sound.high') : $t('wizard.sound.tremolo')"
+          color="purple"
+        />
+        <img :src="`/icons/tones/${vowelForm[s.sound]}.png`" />
+        </div>
+        <div class="column justify-start items-start content-start">
+          <q-btn icon="add" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
+          <q-btn icon="remove" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
+        </div>
+      </div>
+        <q-stepper-navigation>
+          <q-btn @click="step = 4" color="primary" :label="$t('wizard.continue.sound')" />
+          <q-btn flat @click="step = 2"  :label="$t('wizard.back')" class="q-ml-sm" />
+        </q-stepper-navigation>
       </q-step>
 
       <q-step
@@ -81,24 +104,10 @@
 
         <q-stepper-navigation>
           <q-btn color="primary" label="Finish" />
-          <q-btn flat @click="step = 2" color="primary" label="Back" class="q-ml-sm" />
+          <q-btn flat @click="step = 3" color="primary" label="Back" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
     </q-stepper>
-    <div class="row items-start q-gutter-md">
-      <div class="col-12">
-        Familienname
-      </div>
-      <div class="col-12">
-        Schwester | Bruder
-      </div>
-      <div class="col-12">
-        Klang: Scrollrad mit Anfangsbuchstabe, dann 2-5 hoch/tief Silben, dann Endbuchstabe
-      </div>
-      <div class="col-12 col-md-5" v-for="name in testNames()" :key="name.spellings[0].syllables.formattedName">
-        <namecard :name="name"/>
-      </div>
-    </div>
   </q-page>
 </template>
 
@@ -119,12 +128,22 @@ export default class Sound extends Vue {
     { value: 'm', slot: 'genderm' }
   ]
 
+  vowelForm = ['low1', 'high1', 'hl1']
+
   removeSibling (idx: number) {
     this.query.siblings.splice(idx, 1)
   }
 
   addSibling () {
     this.query.addSibling()
+  }
+
+  moreSoundsAvailable (): boolean {
+    return this.query.sound.length < 5
+  }
+
+  lessSoundsPossible (): boolean {
+    return this.query.sound.length > 1
   }
 
   testNames (): BabyName[] {
@@ -137,5 +156,10 @@ export default class Sound extends Vue {
 .genderpicker {
   width: 24px;
   height: 24px;
+}
+
+.soundadjust {
+  height: 100px;
+  max-height: 100px;
 }
 </style>

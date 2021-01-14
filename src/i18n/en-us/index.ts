@@ -16,11 +16,15 @@ export default {
     related: 'Related names'
   },
   wizard: {
+    brother: 'Brother',
+    sister: 'Sister',
+    unisex: 'Unisex',
     back: 'Back',
     continue: {
       withsiblings: 'Next',
       nosiblings: 'Continue without sibling',
-      multiplesiblings: 'Next'
+      multiplesiblings: 'Next',
+      sound: 'Next'
     },
     privacy: 'Below, you can enter the mother\'s and father\'s first name in order to find better baby names that match your familiy. The same applies for your last name, the family name. These names stay in this app and are not sent to anybody. But if you feel you don\'t want to enter them, just leave the respective fields empty.',
     family: 'Welcome {mom} {family} and {dad} {family}! Here, you can extend your family by adding children that already exist or whose names you already know.',
@@ -43,11 +47,15 @@ export default {
       add: 'Add sibling',
       name: 'Sibling',
       title: 'Other children (siblings)',
-      desc: 'Enter siblings of the name you want to find. Either existing children or names of siblings you alread to assign.'
+      desc: 'Enter siblings of the name you want to find. Either existing children or names of siblings you already know.'
     },
-    brother: 'Brother',
-    sister: 'Sister',
-    unisex: 'Unisex'
+    sound: {
+      choose: 'Choose sound',
+      desc: 'Here, you can choose how you want the name to sound. Every name is made up of syllables. And syllables contain vowels that can have a dark or light tone, or a Tremolo as in \'Trio\'',
+      high: 'Light',
+      low: 'Dark',
+      tremolo: 'Tremolo'
+    }
   },
   menu: {
     overview: 'Overview',
