@@ -10,6 +10,8 @@ export class Sibling {
 
 export class Family {
   familyname = ''
+  father = ''
+  mother = ''
   siblings = Array<Sibling>(0)
 
   public addSibling () {

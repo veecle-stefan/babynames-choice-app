@@ -13,8 +13,31 @@
         :done="step > 1"
       >
       <div class="q-gutter-y-md column" style="max-width: 400px">
-          <q-input v-model="query.familyname" :label="$t('wizard.familyname.name')" :hint="$t('wizard.familyname.desc')" />
-          <q-input v-for="(s, index) in query.siblings" :key="s.ID" v-model="s.firstname" :suffix="query.familyname" :label="$t('wizard.sibling.name')" :hint="$t('wizard.sibling.desc')">
+        <div>
+          {{$t('wizard.privacy')}}
+        </div>
+        <q-input v-model="query.familyname" :label="$t('wizard.familyname.name')" :hint="$t('wizard.familyname.desc')" />
+        <q-input v-model="query.mother" :label="$t('wizard.mother.name')" :hint="$t('wizard.mother.desc')" :suffix="query.familyname" />
+        <q-input v-model="query.father" :label="$t('wizard.father.name')" :hint="$t('wizard.father.desc')" :suffix="query.familyname" />
+      </div>
+        <q-stepper-navigation>
+          <q-btn @click="step = 2" color="secondary" :label="$t('wizard.continue.withsiblings')" />
+        </q-stepper-navigation>
+      </q-step>
+
+      <q-step
+        :name="2"
+        title="Siblings"
+        caption="The existing sistor or brother of the newborn"
+        icon="person_add"
+        :done="step > 2"
+        color="secondary"
+      >
+        <div class="q-gutter-y-md column" style="max-width: 400px">
+          <div>
+            {{$t('wizard.family', {mom: query.mother, dad: query.father, family: query.familyname})}}
+          </div>
+        <q-input v-for="(s, index) in query.siblings" :key="s.ID" v-model="s.firstname" :suffix="query.familyname" :label="$t('wizard.sibling.name')" :hint="$t('wizard.sibling.desc')">
             <template v-slot:append>
               <q-btn dense icon="person_remove" @click="removeSibling(index)" />
             <q-btn-toggle
@@ -31,24 +54,10 @@
             </template>
           </q-input>
           <q-btn icon="person_add" color="primary" :label="$t('wizard.sibling.add')" @click="addSibling" />
-      </div>
+        </div>
         <q-stepper-navigation>
-          <q-btn @click="step = 2" color="secondary" label="Continue" />
-        </q-stepper-navigation>
-      </q-step>
-
-      <q-step
-        :name="2"
-        title="Create an ad group"
-        caption="Optional"
-        icon="create_new_folder"
-        :done="step > 2"
-      >
-        An ad group contains one or more ads which target a shared set of keywords.
-
-        <q-stepper-navigation>
-          <q-btn @click="step = 4" color="primary" label="Continue" />
-          <q-btn flat @click="step = 1"  label="Back" class="q-ml-sm" />
+          <q-btn @click="step = 4" color="primary" :label="query.siblings.length > 0 ? $t('wizard.continue.multiplesiblings') : $t('wizard.continue.nosiblings')" />
+          <q-btn flat @click="step = 1"  :label="$t('wizard.back')" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
 

@@ -16,10 +16,28 @@ export default {
     related: 'Related names'
   },
   wizard: {
+    back: 'Back',
+    continue: {
+      withsiblings: 'Next',
+      nosiblings: 'Continue without sibling',
+      multiplesiblings: 'Next'
+    },
+    privacy: 'Below, you can enter the mother\'s and father\'s first name in order to find better baby names that match your familiy. The same applies for your last name, the family name. These names stay in this app and are not sent to anybody. But if you feel you don\'t want to enter them, just leave the respective fields empty.',
+    family: 'Welcome {mom} {family} and {dad} {family}! Here, you can extend your family by adding children that already exist or whose names you already know.',
     familyname: {
       name: 'Family name',
       title: 'Family name',
       desc: 'Enter your familiy name to limit matches to names that fit your name.'
+    },
+    mother: {
+      name: 'Mother',
+      title: 'Mother',
+      desc: 'Enter the mother\'s first name in order to consider baby names that fit well to the family.'
+    },
+    father: {
+      name: 'Father',
+      title: 'Father',
+      desc: 'Enter the father\'s first name in order to consider baby names that fit well to the family.'
     },
     sibling: {
       add: 'Add sibling',
