@@ -31,7 +31,7 @@ export default {
     familyname: {
       name: 'Family name',
       title: 'Family name',
-      desc: 'Enter your familiy name to limit matches to names that fit your name.'
+      desc: 'Enter the familiy that your newborn will have (usually one of your family names)'
     },
     mother: {
       name: 'Mother',
@@ -55,6 +55,18 @@ export default {
       high: 'Light',
       low: 'Dark',
       tremolo: 'Tremolo'
+    },
+    precautions: {
+      title: 'Precautions',
+      desc: 'Some names can be pitfalls. If you want to be cautious, here are some options to consider.',
+      grandma: {
+        title: 'Grandma-safe',
+        desc: 'Some names are a bit too modern for the taste of your parents, so your child\'s grandparents. Maybe you fear they mispronounce it or they never get the spelling right. This option excludes names with difficult pronunciation or unclear spelling.'
+      },
+      grownup: {
+        title: 'Grown-up-safe',
+        desc: 'Some names sound very cute for little girls and boys. But what if they grew up? This option excludes names that are not adult-sounding enough for grown-ups.'
+      }
     }
   },
   menu: {

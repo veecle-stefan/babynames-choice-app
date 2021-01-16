@@ -65,6 +65,7 @@
         :name="3"
         :title="$t('wizard.sound.choose')"
         icon="hearing"
+        :done="step > 3"
       >
       <div class="row">
         <div class="column justify-start items-start content-start" v-for="s in query.sound" :key="s.syllable">
@@ -95,15 +96,21 @@
 
       <q-step
         :name="4"
-        title="Create an ad"
-        icon="add_comment"
+        :title="$t('wizard.precautions.title')"
+        icon="elderly"
+        :done="step > 4"
       >
-        Try out different ad text to see what brings in the most customers, and learn how to
-        enhance your ads using features like ad extensions. If you run into any problems with
-        your ads, find out how to tell if they're running and how to resolve approval issues.
-
+        <div class="q-gutter-y-md column" style="max-width: 400px">
+          <div>
+            {{$t('wizard.precautions.desc')}}
+          </div>
+          <q-list>
+          <label-checkbox v-model="query.precautions.grandma" :label="$t('wizard.precautions.grandma.title')" :hint="$t('wizard.precautions.grandma.desc')" />
+          <label-checkbox v-model="query.precautions.grownup" :label="$t('wizard.precautions.grownup.title')" :hint="$t('wizard.precautions.grownup.desc')" />
+          </q-list>
+        </div>
         <q-stepper-navigation>
-          <q-btn color="primary" label="Finish" />
+          <q-btn @click="step = 5" color="primary" label="Finish" />
           <q-btn flat @click="step = 3" color="primary" label="Back" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
@@ -114,10 +121,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import Namecard from '../components/namecard.vue'
+import LabelCheckbox from '../components/label-checkbox.vue'
 import { BabyDatabase, BabyName, Family } from '../babynames'
 
 @Component({
-  components: { Namecard }
+  components: { Namecard, LabelCheckbox }
 })
 export default class Sound extends Vue {
   step = 1

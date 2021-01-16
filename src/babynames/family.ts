@@ -31,6 +31,11 @@ export class Family {
   siblings = Array<Sibling>(0)
   sound = Array<SyllableSound>(0)
 
+  precautions = {
+    grandma: false,
+    grownup: false
+  }
+
   constructor () {
     // default sound shall be: \/ /\ \/
     this.addSyllable(SyllableVowel.Low)
