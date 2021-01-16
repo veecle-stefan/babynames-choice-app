@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page>
       <q-stepper
       v-model="step"
       animated
@@ -37,14 +37,14 @@
         icon="person_add"
         :done="step > 2"
       >
-        <div class="q-pa-md row wrap items-center">
+        <div class="row wrap items-center">
           <div class="col-12">
             {{$t('wizard.family', {mom: query.mother.name, dad: query.father.name, family: query.familyname.name})}}
           </div>
-          <div class="col-6 col-sm-4" v-for="(s, idx) in query.siblings" :key="s.ID" >
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="(s, idx) in query.siblings" :key="s.ID" >
             <person-input type="child" :editable="true" v-model="s.person" :suffix="query.familyname.name" labels="wizard.sibling" @remove="removeSibling(idx)" />
           </div>
-          <div class="col-6 col-sm-4">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <q-btn icon="person_add" v-show="query.allNamesFilled(query.siblings)" color="primary" :label="query.siblings.length > 0 ? $t('wizard.sibling.add') : $t('wizard.sibling.addfirst')" @click="addSibling" />
           </div>
         </div>
@@ -109,6 +109,8 @@
         </q-stepper-navigation>
       </q-step>
     </q-stepper>
+    <div class="q-pa-md">
+    </div>
   </q-page>
 </template>
 

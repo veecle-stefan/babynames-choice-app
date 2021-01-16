@@ -1,5 +1,5 @@
 <template>
-<div class="q-gutter-y-md column personinput no-wrap justify-center items-center content-center" style="max-width: 200px">
+<div class="q-gutter-y-md column personinput no-wrap justify-center items-center content-center" >
   <div class="input-hint">
     {{$t(`${labels}.hint`)}}
   </div>
@@ -55,7 +55,8 @@ export default class PersonInput extends Vue {
 <style lang="scss">
 .personinput {
   border-radius: 10px;
-  border: 1px dotted rgba(255,255,255,0.4);
+  //border: 1px dotted rgba(255,255,255,0.4);
+  box-shadow: 0px 0px 40px rgba(0,255,255,0.4);
   margin: 10px;
   padding: 10px;
 }
