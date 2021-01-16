@@ -31,16 +31,19 @@ export default {
     familyname: {
       title: 'Family name',
       label: 'Last name',
+      err: '',
       placeholder: 'e.g. Smith',
       hint: 'Enter the last name that your newborn will have'
     },
     mother: {
       label: 'Mother',
+      err: '',
       placeholder: 'e.g. Martha',
       hint: 'The mother\'s first name'
     },
     father: {
       label: 'Father',
+      err: '',
       placeholder: 'e.g. John',
       hint: 'The father\'s first name'
     },
@@ -48,6 +51,7 @@ export default {
       addfirst: 'Add first sibling',
       add: 'Add another sibling',
       label: 'Sibling',
+      err: 'You entered this name more than once',
       placeholder: 'e.g. Jane',
       title: 'Other children (siblings)',
       hint: 'Enter sibling\'s name. Either existing children or names of siblings you already know.'
@@ -55,9 +59,9 @@ export default {
     sound: {
       choose: 'Choose sound',
       hint: 'Here, you can choose how you want the name to sound. Every name is made up of syllables. And syllables contain vowels that can have a dark or light tone, or a Tremolo as in \'Trio\'',
-      high: 'Light',
-      low: 'Dark',
-      tremolo: 'Tremolo'
+      front: 'Front',
+      back: 'Back',
+      diphthong: 'Diphthong'
     },
     precautions: {
       title: 'Precautions',

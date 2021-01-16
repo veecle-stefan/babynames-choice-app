@@ -4,7 +4,7 @@
     {{$t(`${labels}.hint`)}}
   </div>
   <img class="person" :src="`/icons/person/${personIcon()}.png`" />
-  <q-input dense filled :placeholder="$t(`${labels}.placeholder`)" v-model="_person.name" :label="$t(`${labels}.label`)" :suffix="suffix">
+  <q-input dense filled :placeholder="$t(`${labels}.placeholder`)" v-model="_person.name" :label="$t(`${labels}.label`)" :suffix="suffix" :error-message="$t(`${labels}.err`)" :error="error">
     <template v-if="editable" v-slot:append>
               <q-btn dense icon="person_remove" @click="$emit('remove')" color="primary" />
     </template>
@@ -34,6 +34,7 @@ export default class PersonInput extends Vue {
   @Prop({ required: false, default: '' }) readonly suffix!: string
   @Prop({ required: false, default: 'family' }) readonly type!: string
   @Prop({ required: false, default: false }) readonly editable!: boolean
+  @Prop({ required: false, default: false }) readonly error!: boolean
   @ModelSync('value', 'input', { type: Person }) readonly _person!: Person
 
   genderOptions = [

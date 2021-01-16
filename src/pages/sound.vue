@@ -42,10 +42,10 @@
             {{$t('wizard.family', {mom: query.mother.name, dad: query.father.name, family: query.familyname.name})}}
           </div>
           <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="(s, idx) in query.siblings" :key="s.ID" >
-            <person-input type="child" :editable="true" v-model="s.person" :suffix="query.familyname.name" labels="wizard.sibling" @remove="removeSibling(idx)" />
+            <person-input type="child" :editable="true" v-model="s.person" :suffix="query.familyname.name" labels="wizard.sibling" @remove="removeSibling(idx)" :error="checkDoubleName(query.siblings)" />
           </div>
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <q-btn icon="person_add" v-show="query.allNamesFilled(query.siblings)" color="primary" :label="query.siblings.length > 0 ? $t('wizard.sibling.add') : $t('wizard.sibling.addfirst')" @click="addSibling" />
+            <q-btn icon="person_add" v-show="query.allNamesFilled(query.siblings)" color="primary" :label="query.siblings.length > 0 ? $t('wizard.sibling.add') : $t('wizard.sibling.addfirst')" @click="query.addSibling()" />
           </div>
         </div>
         <q-stepper-navigation>
@@ -64,23 +64,12 @@
           {{$t('wizard.sound.hint')}}
         </div>
         <div class="column justify-start items-start content-start" v-for="s in query.sound" :key="s.syllable">
-        <q-slider
-          v-model="s.sound"
-          vertical
-          :min="0"
-          :max="2"
-          :step="1"
-          snap
-          reverse
-          label-always
-          :label-value="s.sound == 0 ? $t('wizard.sound.low') : s.sound == 1 ? $t('wizard.sound.high') : $t('wizard.sound.tremolo')"
-          color="purple"
-        />
+        <vowel-selector v-model="s.sound" />
         <img :src="`/icons/tones/${vowelForm[s.sound]}.png`" />
         </div>
         <div class="column justify-start items-start content-start">
-          <q-btn icon="add" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
-          <q-btn icon="remove" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
+          <q-btn icon="add" color="primary" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
+          <q-btn icon="remove" color="primary" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
         </div>
       </div>
         <q-stepper-navigation>
@@ -119,10 +108,11 @@ import { Vue, Component } from 'vue-property-decorator'
 import Namecard from '../components/namecard.vue'
 import LabelCheckbox from '../components/label-checkbox.vue'
 import PersonInput from '../components/person-input.vue'
-import { BabyDatabase, BabyName, Family } from '../babynames'
+import VowelSelector from '../components/vowel-selector.vue'
+import { BabyDatabase, BabyName, Family, PersonID } from '../babynames'
 
 @Component({
-  components: { Namecard, LabelCheckbox, PersonInput }
+  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector }
 })
 export default class Sound extends Vue {
   step = 1
@@ -134,8 +124,17 @@ export default class Sound extends Vue {
     this.query.siblings.splice(idx, 1)
   }
 
-  addSibling () {
-    this.query.addSibling()
+  checkDoubleName (list: PersonID[]): boolean {
+    for (const name of list) {
+      for (const check of list) {
+        if ((name.ID !== check.ID) && (name.person.name === check.person.name)) {
+          // double entry
+          return true
+        }
+      }
+    }
+    // no double name found
+    return false
   }
 
   moreSoundsAvailable (): boolean {
