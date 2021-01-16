@@ -16,16 +16,22 @@
         <div class="text-h6">{{ $t('about.software')}}</div>
         <div v-html="$t('about.swdesc')"></div>
       </div>
+      <div class="col-12 col-sm-6 q-ma-md">
+        <div class="text-h6">{{ $t('about.attributions')}}</div>
+        <div v-for="a in attribution" :key="a.title" v-html="a.html" />
+      </div>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
-  name: 'About'
-})
+import { Vue, Component } from 'vue-property-decorator'
+@Component
+export default class About extends Vue {
+  attribution = [
+    { title: 'Vecteezy Images', html: '<a href="https://www.vecteezy.com/free-vector/flat-design">Flat Design Vectors by Vecteezy</a>' }
+  ]
+}
 </script>
 
 <style lang="scss">

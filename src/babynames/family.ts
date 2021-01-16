@@ -1,10 +1,9 @@
-export class Sibling {
-  ID: number
-  firstname = ''
-  gender = 'u'
+export class Person {
+  name = ''
+  gender: string
 
-  constructor (id: number) {
-    this.ID = id
+  constructor (gender = 'u') {
+    this.gender = gender
   }
 }
 
@@ -24,11 +23,21 @@ export enum SyllableVowel {
   Low = 0
 }
 
+export class PersonID {
+  person: Person
+  ID: number
+
+  constructor (person: Person, ID: number) {
+    this.person = person
+    this.ID = ID
+  }
+}
+
 export class Family {
-  familyname = ''
-  father = ''
-  mother = ''
-  siblings = Array<Sibling>(0)
+  familyname = new Person()
+  mother = new Person('f')
+  father = new Person('m')
+  siblings = Array<PersonID>(0)
   sound = Array<SyllableSound>(0)
 
   precautions = {
@@ -44,7 +53,7 @@ export class Family {
   }
 
   public addSibling () {
-    this.siblings.push(new Sibling(this.siblings.length))
+    this.siblings.push(new PersonID(new Person('u'), this.siblings.length))
   }
 
   public addSyllable (sound = 0) {
@@ -53,5 +62,18 @@ export class Family {
 
   public removeLastSyllable () {
     this.sound.splice(this.sound.length - 1)
+  }
+
+  /**
+   * Returns wether names have been assigned to
+   * every item in the list.
+   * Returns __true__ if the list is empty.
+   * @param list A list of persons to check
+   */
+  public allNamesFilled (list: PersonID[]): boolean {
+    for (const p of list) {
+      if (p.person.name === '') return false
+    }
+    return true
   }
 }
