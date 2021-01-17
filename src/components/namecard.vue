@@ -17,7 +17,7 @@
         <q-carousel-slide v-for="(s, index) in orderedSpellings()" :key="s.syllables.formattedName" :name="`s${index}`" class="column no-wrap flex-center">
           <div class="q-mt-md text-center">
             <q-badge v-if="currentName.spellings.length > 1" floating color="transparent">{{index+1}}/{{currentName.spellings.length}}</q-badge>
-            <name-spelling :name="s" />
+            <name-spelling :name="s" :lastname="lastname" />
             <q-avatar v-for="flag in s.origins" :key="flag" size="16px"><img :src="`/icons/flags/${flag}.png`" /></q-avatar>
           </div>
         </q-carousel-slide>
@@ -67,6 +67,7 @@ import WordList from '../components/word-list.vue'
 export default class Namecard extends Vue {
   @Prop({ required: false, default: 100 }) readonly width!: number
   @Prop({ required: false, default: 300 }) readonly height!: number
+  @Prop({ required: false, default: '' }) readonly lastname!: string
   @Prop({ required: true }) readonly name!: BabyName
 
   currentName: BabyName

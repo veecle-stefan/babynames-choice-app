@@ -4,6 +4,7 @@
   <q-tooltip content-class="bg-white" anchor="center left" self="center left">
     <syllables-splitter :syllables="name.syllables" />
   </q-tooltip>
+  {{ lastname }}
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import SyllablesSplitter from './syllables-splitter.vue'
 })
 export default class NameSpelling extends Vue {
   @Prop({ required: true }) readonly name!: RawSpelling
+  @Prop({ required: false, default: '' }) readonly lastname!: string
 }
 </script>
 

@@ -103,7 +103,8 @@
         </q-stepper-navigation>
       </q-step>
     </q-stepper>
-    <div class="q-pa-md">
+    <div class="q-pa-md" v-if="step === 5">
+      <name-picker :family="query" />
     </div>
   </q-page>
 </template>
@@ -115,16 +116,15 @@ import LabelCheckbox from '../components/label-checkbox.vue'
 import PersonInput from '../components/person-input.vue'
 import VowelSelector from '../components/vowel-selector.vue'
 import SyllablesSplitter from '../components/syllables-splitter.vue'
-import { BabyDatabase, BabyName, Family, PersonID, Syllables, SyllableSound } from '../babynames'
+import NamePicker from '../components/name-picker.vue'
+import { Family, PersonID, Syllables, SyllableSound } from '../babynames'
 
 @Component({
-  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector, SyllablesSplitter }
+  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector, SyllablesSplitter, NamePicker }
 })
 export default class Sound extends Vue {
   step = 1
   query = new Family()
-
-  vowelForm = ['low1', 'high1', 'hl1']
 
   removeSibling (idx: number) {
     this.query.siblings.splice(idx, 1)
@@ -149,10 +149,6 @@ export default class Sound extends Vue {
 
   lessSoundsPossible (): boolean {
     return this.query.sound.length > 1
-  }
-
-  testNames (): BabyName[] {
-    return [BabyDatabase.allNames[0]]
   }
 
   nameVowelExample (s: SyllableSound[]): Syllables {
@@ -182,13 +178,5 @@ export default class Sound extends Vue {
 </script>
 
 <style lang="scss">
-.genderpicker {
-  width: 24px;
-  height: 24px;
-}
 
-.soundadjust {
-  height: 100px;
-  max-height: 100px;
-}
 </style>
