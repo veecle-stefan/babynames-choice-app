@@ -19,7 +19,7 @@ export default class SyllablesSplitter extends Vue {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20pt;
   display: block;
-  color: #666666;
+  color: #999999;
 }
 
 .syllable {

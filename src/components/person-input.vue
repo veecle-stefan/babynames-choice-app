@@ -66,6 +66,11 @@ export default class PersonInput extends Vue {
   width: 100px;
 }
 
+.genderpicker {
+  width: 24px;
+  height: 24px;
+}
+
 .input-hint {
   font-size: 9pt;
   color: #888888;

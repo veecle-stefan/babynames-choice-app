@@ -42,7 +42,7 @@
             {{$t('wizard.family', {mom: query.mother.name, dad: query.father.name, family: query.familyname.name})}}
           </div>
           <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="(s, idx) in query.siblings" :key="s.ID" >
-            <person-input type="child" :editable="true" v-model="s.person" :suffix="query.familyname.name" labels="wizard.sibling" @remove="removeSibling(idx)" :error="checkDoubleName(query.siblings)" />
+            <person-input type="child" :editable="true" v-model="s.person" :suffix="query.familyname.name" labels="wizard.sibling" @remove="removeSibling(idx)" :error="checkDoubleName(query.siblings, s)" />
           </div>
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <q-btn icon="person_add" v-show="query.allNamesFilled(query.siblings)" color="primary" :label="query.siblings.length > 0 ? $t('wizard.sibling.add') : $t('wizard.sibling.addfirst')" @click="query.addSibling()" />
@@ -130,13 +130,11 @@ export default class Sound extends Vue {
     this.query.siblings.splice(idx, 1)
   }
 
-  checkDoubleName (list: PersonID[]): boolean {
-    for (const name of list) {
-      for (const check of list) {
-        if ((name.ID !== check.ID) && (name.person.name === check.person.name)) {
-          // double entry
-          return true
-        }
+  checkDoubleName (list: PersonID[], p: PersonID): boolean {
+    for (const check of list) {
+      if ((p.ID !== check.ID) && (p.person.name === check.person.name)) {
+        // double entry
+        return true
       }
     }
     // no double name found
