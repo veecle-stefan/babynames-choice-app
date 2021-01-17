@@ -1,5 +1,4 @@
 <template>
-  <div>
    <q-card bordered class="my-card">
       <q-card-section>
         <q-carousel
@@ -50,7 +49,6 @@
         </q-card>
       </q-expansion-item>
    </q-card>
-  </div>
 </template>
 
 <script lang="ts">

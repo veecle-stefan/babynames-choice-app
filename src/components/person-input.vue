@@ -58,12 +58,12 @@ export default class PersonInput extends Vue {
   border-radius: 10px;
   //border: 1px dotted rgba(255,255,255,0.4);
   box-shadow: 0px 0px 40px rgba(0,255,255,0.4);
-  margin: 10px;
-  padding: 10px;
+  margin: 5px;
+  padding: 5px;
 }
 
 .person {
-  width: 100px;
+  width: 70px;
 }
 
 .genderpicker {

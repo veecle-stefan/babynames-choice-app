@@ -35,6 +35,9 @@ export default {
       placeholder: 'e.g. Smith',
       hint: 'Enter the last name that your newborn will have'
     },
+    parents: {
+      title: 'Parent names'
+    },
     mother: {
       label: 'Mother',
       err: '',
@@ -48,16 +51,15 @@ export default {
       hint: 'The father\'s first name'
     },
     sibling: {
+      title: 'Siblings',
       addfirst: 'Add first sibling',
-      add: 'Add another sibling',
       label: 'Sibling',
       err: 'You entered this name more than once',
       placeholder: 'e.g. Jane',
-      title: 'Other children (siblings)',
       hint: 'Enter sibling\'s name. Either existing children or names of siblings you already know.'
     },
     sound: {
-      choose: 'Choose sound',
+      title: 'Choose sound',
       hint: 'Here, you can choose how you want the name to sound. Every name is made up of syllables. And syllables contain vowels that can have either a front or back sound, or a diphthong as in \'Trio\'',
       front: 'Front',
       back: 'Back',

@@ -34,11 +34,11 @@ export class PersonID {
 }
 
 export class Family {
-  familyname = new Person()
+  familyname: Person
   mother = new Person('f')
   father = new Person('m')
-  siblings = Array<PersonID>(0)
-  sound = Array<SyllableSound>(0)
+  siblings: Array<PersonID>
+  sound: Array<SyllableSound>
 
   precautions = {
     grandma: false,
@@ -46,10 +46,38 @@ export class Family {
   }
 
   constructor () {
+    this.familyname = new Person()
+    this.siblings = new Array<PersonID>(0)
+    this.sound = new Array<SyllableSound>(0)
+    this.resetSiblings()
+    this.resetSound()
+  }
+
+  public resetSound () {
+    this.sound = new Array<SyllableSound>(0)
     // default sound shall be: \/ /\ \/
     this.addSyllable(SyllableVowel.Low)
     this.addSyllable(SyllableVowel.High)
     this.addSyllable(SyllableVowel.Low)
+  }
+
+  public resetSiblings () {
+    this.siblings = new Array<PersonID>(0)
+    this.addSibling()
+  }
+
+  public resetFamilyName () {
+    this.familyname.name = ''
+  }
+
+  public resetParents () {
+    this.mother.name = ''
+    this.father.name = ''
+  }
+
+  public resetPrecautions () {
+    this.precautions.grandma = false
+    this.precautions.grownup = false
   }
 
   public addSibling () {

@@ -1,42 +1,29 @@
 <template>
   <q-page>
-      <q-stepper
-      v-model="step"
-      animated
-      vertical
-    >
-      <q-step
-        :name="1"
-        :title="$t('wizard.familyname.title')"
-        icon="settings"
-        :done="step > 1"
-      >
-      <div class="row">
-        <div class="col-12">
-          {{$t('wizard.privacy')}}
+     <q-list bordered class="bg-dark" dense>
+       <setting-group tag="wizard.familyname" @reset="query.resetFamilyName()" icon="loyalty" :summary="[query.familyname.name]">
+          <div class="row">
+            <div class="col-12">
+              {{$t('wizard.privacy')}}
+            </div>
+            <div class="col-12">
+              <person-input v-model="query.familyname" labels="wizard.familyname" />
+            </div>
+          </div>
+       </setting-group>
+      <q-separator />
+      <setting-group tag="wizard.parents" @reset="query.resetParents()" icon="person_pin" :summary="[query.mother.name, query.father.name]">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <person-input type="mother" v-model="query.mother" labels="wizard.mother" :suffix="query.familyname.name" />
+          </div>
+          <div class="col-12 col-sm-6">
+            <person-input type="father" v-model="query.father" labels="wizard.father" :suffix="query.familyname.name" />
+          </div>
         </div>
-        <div class="col-12">
-          <person-input v-model="query.familyname" labels="wizard.familyname" />
-        </div>
-        <div class="col-12 col-sm-6">
-          <person-input type="mother" v-model="query.mother" labels="wizard.mother" :suffix="query.familyname.name" />
-        </div>
-        <div class="col-12 col-sm-6">
-          <person-input type="father" v-model="query.father" labels="wizard.father" :suffix="query.familyname.name" />
-        </div>
-      </div>
-        <q-stepper-navigation>
-          <q-btn @click="step = 2" color="secondary" :label="$t('wizard.continue.withsiblings')" />
-        </q-stepper-navigation>
-      </q-step>
-
-      <q-step
-        :name="2"
-        :title="$t('wizard.sibling.add')"
-        caption="The existing sistor or brother of the newborn"
-        icon="person_add"
-        :done="step > 2"
-      >
+      </setting-group>
+      <q-separator />
+      <setting-group tag="wizard.sibling" @reset="query.resetSiblings()" icon="person_add" :summary="query.siblings.map(s => s.person.name)">
         <div class="row wrap items-center">
           <div class="col-12">
             {{$t('wizard.family', {mom: query.mother.name, dad: query.father.name, family: query.familyname.name})}}
@@ -48,46 +35,30 @@
             <q-btn icon="person_add" v-show="query.allNamesFilled(query.siblings)" color="primary" :label="query.siblings.length > 0 ? $t('wizard.sibling.add') : $t('wizard.sibling.addfirst')" @click="query.addSibling()" />
           </div>
         </div>
-        <q-stepper-navigation>
-          <q-btn @click="step = 3" color="primary" :label="query.siblings.length > 0 ? $t('wizard.continue.multiplesiblings') : $t('wizard.continue.nosiblings')" />
-          <q-btn flat @click="step = 1"  :label="$t('wizard.back')" class="q-ml-sm" />
-        </q-stepper-navigation>
-      </q-step>
-      <q-step
-        :name="3"
-        :title="$t('wizard.sound.choose')"
-        icon="hearing"
-        :done="step > 3"
-      >
-      <div class="column">
-        <div>
-          {{$t('wizard.sound.hint')}}
-        </div>
-        <div class="fit row no-wrap justify-start items-start content-start">
-          <vowel-selector v-for="s in query.sound" :key="s.syllable" v-model="s.sound" />
-          <div class="column justify-center q-pa-md">
-            <q-btn icon="add" color="primary" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
-            <q-btn icon="remove" color="primary" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
+      </setting-group>
+      <q-separator />
+      <setting-group tag="wizard.sound" @reset="query.resetSound()" icon="hearing">
+        <div class="column">
+          <div>
+            {{$t('wizard.sound.hint')}}
           </div>
-          <div class="column justify-center q-pa-md">
-            <div>
-              {{$t('wizard.sound.example')}}:
+          <div class="fit row no-wrap justify-start items-start content-start">
+            <vowel-selector v-for="s in query.sound" :key="s.syllable" v-model="s.sound" />
+            <div class="column justify-center q-pa-md">
+              <q-btn icon="add" color="primary" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
+              <q-btn icon="remove" color="primary" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
             </div>
-            <syllables-splitter :syllables="nameVowelExample(query.sound)" />
+            <div class="column justify-center q-pa-md">
+              <div>
+                {{$t('wizard.sound.example')}}:
+              </div>
+              <syllables-splitter :syllables="nameVowelExample(query.sound)" />
+            </div>
           </div>
         </div>
-      </div>
-        <q-stepper-navigation>
-          <q-btn @click="step = 4" color="primary" :label="$t('wizard.continue.sound')" />
-          <q-btn flat @click="step = 2"  :label="$t('wizard.back')" class="q-ml-sm" />
-        </q-stepper-navigation>
-      </q-step>
-      <q-step
-        :name="4"
-        :title="$t('wizard.precautions.title')"
-        icon="elderly"
-        :done="step > 4"
-      >
+      </setting-group>
+      <q-separator />
+      <setting-group tag="wizard.precautions" @reset="query.resetPrecautions()" icon="elderly">
         <div class="q-gutter-y-md column" style="max-width: 400px">
           <div>
             {{$t('wizard.precautions.hint')}}
@@ -97,15 +68,14 @@
           <label-checkbox v-model="query.precautions.grownup" :label="$t('wizard.precautions.grownup.title')" :hint="$t('wizard.precautions.grownup.hint')" />
           </q-list>
         </div>
-        <q-stepper-navigation>
-          <q-btn @click="step = 5" color="primary" label="Finish" />
-          <q-btn flat @click="step = 3" color="primary" label="Back" class="q-ml-sm" />
-        </q-stepper-navigation>
-      </q-step>
-    </q-stepper>
-    <div class="q-pa-md" v-if="step === 5">
+      </setting-group>
+     </q-list>
+    <div class="q-pa-md">
       <name-picker :family="query" />
     </div>
+    <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]" duration="0">
+      <q-btn fab icon="keyboard_arrow_up" color="accent" />
+    </q-page-scroller>
   </q-page>
 </template>
 
@@ -117,14 +87,15 @@ import PersonInput from '../components/person-input.vue'
 import VowelSelector from '../components/vowel-selector.vue'
 import SyllablesSplitter from '../components/syllables-splitter.vue'
 import NamePicker from '../components/name-picker.vue'
+import SettingGroup from '../components/setting-group.vue'
 import { Family, PersonID, Syllables, SyllableSound } from '../babynames'
 
 @Component({
-  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector, SyllablesSplitter, NamePicker }
+  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector, SyllablesSplitter, NamePicker, SettingGroup }
 })
 export default class Sound extends Vue {
-  step = 1
   query = new Family()
+  showFamily = false
 
   removeSibling (idx: number) {
     this.query.siblings.splice(idx, 1)
