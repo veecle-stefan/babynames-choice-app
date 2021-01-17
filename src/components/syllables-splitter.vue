@@ -1,22 +1,16 @@
 <template>
-  <div class="text-h5">
-  {{ name.syllables.formattedName }}
-  <q-tooltip content-class="bg-white" anchor="center left" self="center left">
-    <syllables-splitter :syllables="name.syllables" />
-  </q-tooltip>
-  </div>
+    <div class="mainname">
+      <span v-for="s in syllables.ToneSyllables" :key="s.ID" :class="`syllable syl-color-${s.tone}`">{{ s.chars }}</span>
+    </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { RawSpelling } from '../babynames'
-import SyllablesSplitter from './syllables-splitter.vue'
+import { Syllables } from '../babynames'
 
-@Component({
-  components: { SyllablesSplitter }
-})
-export default class NameSpelling extends Vue {
-  @Prop({ required: true }) readonly name!: RawSpelling
+@Component
+export default class SyllablesSplitter extends Vue {
+  @Prop({ required: true }) readonly syllables!: Syllables
 }
 </script>
 
@@ -25,7 +19,7 @@ export default class NameSpelling extends Vue {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20pt;
   display: block;
-  color: #444444;
+  color: #666666;
 }
 
 .syllable {
@@ -71,11 +65,5 @@ export default class NameSpelling extends Vue {
 
 .syl-color-5 {
   background-image: url('/icons/tones/hl1.png');
-}
-
-.altspelling {
-  font-size: 10pt;
-  display: inline;
-  margin-right: 15px;
 }
 </style>

@@ -59,17 +59,22 @@
         icon="hearing"
         :done="step > 3"
       >
-      <div class="row wrap">
-        <div class="col-12">
+      <div class="column">
+        <div>
           {{$t('wizard.sound.hint')}}
         </div>
-        <div class="column justify-start items-start content-start" v-for="s in query.sound" :key="s.syllable">
-        <vowel-selector v-model="s.sound" />
-        <img :src="`/icons/tones/${vowelForm[s.sound]}.png`" />
-        </div>
-        <div class="column justify-start items-start content-start">
-          <q-btn icon="add" color="primary" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
-          <q-btn icon="remove" color="primary" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
+        <div class="fit row no-wrap justify-start items-start content-start">
+          <vowel-selector v-for="s in query.sound" :key="s.syllable" v-model="s.sound" />
+          <div class="column justify-center q-pa-md">
+            <q-btn icon="add" color="primary" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
+            <q-btn icon="remove" color="primary" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
+          </div>
+          <div class="column justify-center q-pa-md">
+            <div>
+              {{$t('wizard.sound.example')}}:
+            </div>
+            <syllables-splitter :syllables="nameVowelExample(query.sound)" />
+          </div>
         </div>
       </div>
         <q-stepper-navigation>
@@ -109,10 +114,11 @@ import Namecard from '../components/namecard.vue'
 import LabelCheckbox from '../components/label-checkbox.vue'
 import PersonInput from '../components/person-input.vue'
 import VowelSelector from '../components/vowel-selector.vue'
-import { BabyDatabase, BabyName, Family, PersonID } from '../babynames'
+import SyllablesSplitter from '../components/syllables-splitter.vue'
+import { BabyDatabase, BabyName, Family, PersonID, Syllables, SyllableSound } from '../babynames'
 
 @Component({
-  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector }
+  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector, SyllablesSplitter }
 })
 export default class Sound extends Vue {
   step = 1
@@ -147,6 +153,30 @@ export default class Sound extends Vue {
 
   testNames (): BabyName[] {
     return [BabyDatabase.allNames[0]]
+  }
+
+  nameVowelExample (s: SyllableSound[]): Syllables {
+    return s.reduce((acc, syl) => {
+      let oneSyl = ''
+      let oneTone = 0
+      oneSyl += acc.c.length === 0 ? 'L' : 'l'
+      switch (syl.sound) {
+        case 0:
+          oneSyl += 'o'
+          oneTone = 1
+          break
+        case 1:
+          oneSyl += 'a'
+          oneTone = 4
+          break
+        case 2:
+          oneTone = 5
+          oneSyl += 'ai'
+      }
+      acc.c.push(oneSyl)
+      acc.t.push(oneTone)
+      return acc
+    }, new Syllables())
   }
 }
 </script>

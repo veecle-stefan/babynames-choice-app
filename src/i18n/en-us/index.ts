@@ -58,10 +58,11 @@ export default {
     },
     sound: {
       choose: 'Choose sound',
-      hint: 'Here, you can choose how you want the name to sound. Every name is made up of syllables. And syllables contain vowels that can have a dark or light tone, or a Tremolo as in \'Trio\'',
+      hint: 'Here, you can choose how you want the name to sound. Every name is made up of syllables. And syllables contain vowels that can have either a front or back sound, or a diphthong as in \'Trio\'',
       front: 'Front',
       back: 'Back',
-      diphthong: 'Diphthong'
+      diphthong: 'Diphthong',
+      example: 'Example'
     },
     precautions: {
       title: 'Precautions',

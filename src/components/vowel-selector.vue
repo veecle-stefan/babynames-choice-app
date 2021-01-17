@@ -1,18 +1,29 @@
 <template>
 <q-carousel
-  class="q-pa-none q-ma-none"
   v-model="slide"
   vertical
-  transition-prev="slide-down"
-  transition-next="slide-up"
+  transition-prev="fade"
+  transition-next="fade"
   swipeable
   animated
   arrows
-  height="125px"
+  height="100px"
   >
-  <q-carousel-slide name="2" img-src="/icons/tones/hl1.png" />
-  <q-carousel-slide name="1" img-src="/icons/tones/high1.png" />
-  <q-carousel-slide name="0" img-src="/icons/tones/low1.png" />
+  <q-carousel-slide name="2" class="slide">
+    <div class="slideimg tone-2">
+    {{$t('wizard.sound.diphthong')}}
+    </div>
+  </q-carousel-slide>
+  <q-carousel-slide name="1" class="slide">
+  <div class="slideimg tone-1">
+    {{$t('wizard.sound.front')}}
+    </div>
+  </q-carousel-slide>
+  <q-carousel-slide name="0" class="slide">
+    <div class="slideimg tone-0">
+    {{$t('wizard.sound.back')}}
+    </div>
+  </q-carousel-slide>
 </q-carousel>
 </template>
 
@@ -35,12 +46,32 @@ export default class VowelSelector extends Vue {
 </script>
 
 <style lang="scss">
+.slide {
+  padding: 0;
+}
 .slideimg {
-  width: 70px;
+  width: 50px;
+  height: 100px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-position: center;
+  background-size: 50px 100px;
+  line-height: 100px;
+  font-size: 10px;
+  color: $primary;
+  text-align: center;
+  vertical-align: middle;
 }
 
-.vowel-card {
-  width: 35px;
-  height: 100px;
+.tone-2 {
+  background-image: url('/icons/tones/hl1.png');
 }
+.tone-1 {
+  background-image: url('/icons/tones/high1.png');
+}
+.tone-0 {
+  background-image: url('/icons/tones/low1.png');
+}
+
 </style>

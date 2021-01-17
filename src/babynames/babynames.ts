@@ -26,6 +26,7 @@ export enum DictLang {
 export interface ToneSyllable {
   chars: string
   tone: number
+  ID: number
 }
 
 export interface DictionaryWord {
@@ -55,7 +56,7 @@ export class Syllables {
     const result: ToneSyllable[] = []
     for (let i = 0; i < this.c.length; i++) {
       const chr = (i === 0) ? this.CapFirst(this.c[i]) : this.c[i].toLocaleLowerCase()
-      result.push({ chars: chr, tone: this.t[i] })
+      result.push({ chars: chr, tone: this.t[i], ID: i })
     }
     return result
   }
