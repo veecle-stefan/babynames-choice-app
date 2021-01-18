@@ -60,11 +60,15 @@ export default {
     },
     sound: {
       title: 'Choose sound',
+      use: 'Prefer sound',
       hint: 'Here, you can choose how you want the name to sound. Every name is made up of syllables. And syllables contain vowels that can have either a front or back sound, or a diphthong as in \'Trio\'',
       front: 'Front',
       back: 'Back',
       diphthong: 'Diphthong',
       example: 'Example'
+    },
+    narrow: {
+      title: 'Narrow down'
     },
     precautions: {
       title: 'Precautions',

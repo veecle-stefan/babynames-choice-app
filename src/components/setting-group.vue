@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts">
-import { RawSpelling } from 'src/babynames'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
@@ -46,12 +45,12 @@ export default class SettingGroup extends Vue {
   }
 
   showSummary (): boolean {
-    if ((this.summary == null) || (this.summary.length == 0)) {
+    if ((this.summary === null) || (this.summary.length === 0)) {
       return false
     }
 
     for (const item of this.summary) {
-      if (item != '') return true
+      if (item !== '') return true
     }
     return false
   }

@@ -37,18 +37,19 @@
         </div>
       </setting-group>
       <q-separator />
-      <setting-group tag="wizard.sound" @reset="query.resetSound()" icon="hearing">
+      <setting-group tag="wizard.sound" @reset="query.resetSound()" icon="hearing" :summary="query.useSound ? [$t('wizard.sound.use')] : []" >
         <div class="column">
           <div>
             {{$t('wizard.sound.hint')}}
           </div>
+          <q-checkbox v-model="query.useSound" :label="$t('wizard.sound.use')" />
           <div class="fit row no-wrap justify-start items-start content-start">
-            <vowel-selector v-for="s in query.sound" :key="s.syllable" v-model="s.sound" />
+            <vowel-selector v-for="s in query.sound" :key="s.syllable" v-model="s.sound" @change="query.useSound = true" :disable="!query.useSound" />
             <div class="column justify-center q-pa-md">
-              <q-btn icon="add" color="primary" @click="query.addSyllable()" :disable="!moreSoundsAvailable()" />
-              <q-btn icon="remove" color="primary" @click="query.removeLastSyllable()" :disable="!lessSoundsPossible()" />
+              <q-btn :disable="!moreSoundsAvailable()" icon="add" color="primary" @click="query.addSyllable(), query.useSound = true" />
+              <q-btn :disable="!lessSoundsPossible()" icon="remove" color="primary" @click="query.removeLastSyllable(), query.useSound = true" />
             </div>
-            <div class="column justify-center q-pa-md">
+            <div class="column justify-center q-pa-md" v-show="query.useSound">
               <div>
                 {{$t('wizard.sound.example')}}:
               </div>
@@ -58,7 +59,11 @@
         </div>
       </setting-group>
       <q-separator />
-      <setting-group tag="wizard.precautions" @reset="query.resetPrecautions()" icon="elderly">
+      <setting-group tag="wizard.narrow" @reset="query.resetFilter()" icon="filter_alt">
+
+      </setting-group>
+      <q-separator />
+      <setting-group tag="wizard.precautions" @reset="query.resetPrecautions()" icon="elderly" :summary="enabledPrecautionNames()">
         <div class="q-gutter-y-md column" style="max-width: 400px">
           <div>
             {{$t('wizard.precautions.hint')}}
@@ -118,6 +123,15 @@ export default class Sound extends Vue {
 
   lessSoundsPossible (): boolean {
     return this.query.sound.length > 1
+  }
+
+  enabledPrecautionNames (): string[] {
+    return Object.entries(this.query.precautions).reduce((list, [name, enabled]) => {
+      if (enabled) {
+        list.push(this.$t(`wizard.precautions.${name}.title`).toString())
+      }
+      return list
+    }, [] as string[])
   }
 
   nameVowelExample (s: SyllableSound[]): Syllables {

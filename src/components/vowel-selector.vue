@@ -10,17 +10,17 @@
   height="100px"
   >
   <q-carousel-slide name="2" class="slide">
-    <div class="slideimg tone-2">
+    <div :class="`slideimg ${disable ? 'slide-disable': ''} tone-2`">
     {{$t('wizard.sound.diphthong')}}
     </div>
   </q-carousel-slide>
   <q-carousel-slide name="1" class="slide">
-  <div class="slideimg tone-1">
+  <div :class="`slideimg ${disable ? 'slide-disable': ''} tone-1`">
     {{$t('wizard.sound.front')}}
     </div>
   </q-carousel-slide>
   <q-carousel-slide name="0" class="slide">
-    <div class="slideimg tone-0">
+    <div :class="`slideimg ${disable ? 'slide-disable': ''} tone-0`">
     {{$t('wizard.sound.back')}}
     </div>
   </q-carousel-slide>
@@ -28,10 +28,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, ModelSync } from 'vue-property-decorator'
+import { Vue, Component, ModelSync, Prop } from 'vue-property-decorator'
 
 @Component
 export default class VowelSelector extends Vue {
+  @Prop({ required: false, default: false }) readonly disable!: boolean
   @ModelSync('value', 'input', { type: Number }) _vowelType!: number
   selectedImg = 'low1'
 
@@ -40,6 +41,7 @@ export default class VowelSelector extends Vue {
   }
 
   set slide (v: string) {
+    this.$emit('change')
     this._vowelType = parseInt(v)
   }
 }
@@ -62,6 +64,10 @@ export default class VowelSelector extends Vue {
   color: $primary;
   text-align: center;
   vertical-align: middle;
+}
+
+.slide-disable {
+  color: #888888 !important;
 }
 
 .tone-2 {

@@ -38,7 +38,13 @@ export class Family {
   mother = new Person('f')
   father = new Person('m')
   siblings: Array<PersonID>
+  useSound = false
   sound: Array<SyllableSound>
+
+  filter = {
+    godly: false,
+    languages: 0
+  }
 
   precautions = {
     grandma: false,
@@ -54,6 +60,7 @@ export class Family {
   }
 
   public resetSound () {
+    this.useSound = false
     this.sound = new Array<SyllableSound>(0)
     // default sound shall be: \/ /\ \/
     this.addSyllable(SyllableVowel.Low)
@@ -78,6 +85,10 @@ export class Family {
   public resetPrecautions () {
     this.precautions.grandma = false
     this.precautions.grownup = false
+  }
+
+  public resetFilter () {
+    //
   }
 
   public addSibling () {
