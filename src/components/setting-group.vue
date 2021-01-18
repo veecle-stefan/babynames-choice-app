@@ -31,7 +31,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 export default class SettingGroup extends Vue {
   @Prop({ required: true }) readonly tag!: string
   @Prop({ required: true }) readonly icon!: string
-  @Prop({ required: false, default: [] }) readonly summary!: string[]
+  @Prop({ required: false, default: function () { return [] as string[] }} ) readonly summary!: string[]
 
   isOpen = false
 

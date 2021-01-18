@@ -52,6 +52,7 @@ export default {
     },
     sibling: {
       title: 'Siblings',
+      add: 'Add another sibling',
       addfirst: 'Add first sibling',
       label: 'Sibling',
       err: 'You entered this name more than once',
