@@ -59,21 +59,9 @@
         </div>
       </setting-group>
       <q-separator />
-      <setting-group tag="wizard.narrow" @reset="query.resetFilter()" icon="filter_alt">
-
-      </setting-group>
+      <setting-group tag="wizard.narrow" icon="filter_alt" :settings="query.narrow" />
       <q-separator />
-      <setting-group tag="wizard.precautions" @reset="query.resetPrecautions()" icon="elderly" :summary="enabledPrecautionNames()">
-        <div class="q-gutter-y-md column" style="max-width: 400px">
-          <div>
-            {{$t('wizard.precautions.hint')}}
-          </div>
-          <q-list>
-          <label-checkbox v-model="query.precautions.grandma" :label="$t('wizard.precautions.grandma.title')" :hint="$t('wizard.precautions.grandma.hint')" />
-          <label-checkbox v-model="query.precautions.grownup" :label="$t('wizard.precautions.grownup.title')" :hint="$t('wizard.precautions.grownup.hint')" />
-          </q-list>
-        </div>
-      </setting-group>
+      <setting-group tag="wizard.precautions" icon="elderly" :settings="query.precautions" />
      </q-list>
     <div class="q-pa-md">
       <name-picker :family="query" />
@@ -93,7 +81,7 @@ import VowelSelector from '../components/vowel-selector.vue'
 import SyllablesSplitter from '../components/syllables-splitter.vue'
 import NamePicker from '../components/name-picker.vue'
 import SettingGroup from '../components/setting-group.vue'
-import { Family, PersonID, Syllables, SyllableSound } from '../babynames'
+import { Family, PersonID, Syllables, SyllableSound, LanguageIDs } from '../babynames'
 
 @Component({
   components: { Namecard, LabelCheckbox, PersonInput, VowelSelector, SyllablesSplitter, NamePicker, SettingGroup }
@@ -101,6 +89,7 @@ import { Family, PersonID, Syllables, SyllableSound } from '../babynames'
 export default class Sound extends Vue {
   query = new Family()
   showFamily = false
+  languageStrings = Object.values(LanguageIDs)
 
   removeSibling (idx: number) {
     this.query.siblings.splice(idx, 1)
@@ -123,15 +112,6 @@ export default class Sound extends Vue {
 
   lessSoundsPossible (): boolean {
     return this.query.sound.length > 1
-  }
-
-  enabledPrecautionNames (): string[] {
-    return Object.entries(this.query.precautions).reduce((list, [name, enabled]) => {
-      if (enabled) {
-        list.push(this.$t(`wizard.precautions.${name}.title`).toString())
-      }
-      return list
-    }, [] as string[])
   }
 
   nameVowelExample (s: SyllableSound[]): Syllables {

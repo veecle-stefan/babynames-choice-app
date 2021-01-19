@@ -69,18 +69,26 @@ export default {
       example: 'Example'
     },
     narrow: {
-      title: 'Narrow down'
+      title: 'Narrow down',
+      languages: {
+        label: 'Languages',
+        hint: 'Only show names common in the following languages'
+      }
     },
     precautions: {
       title: 'Precautions',
       hint: 'Some names can be pitfalls. If you want to be cautious, here are some options to consider.',
       grandma: {
-        title: 'Grandma-safe',
+        label: 'Grandma-safe',
         hint: 'Some names are a bit too modern for the taste of your parents, so your child\'s grandparents. Maybe you fear they mispronounce it or they never get the spelling right. This option excludes names with difficult pronunciation or unclear spelling.'
       },
       grownup: {
-        title: 'Grown-up-safe',
+        label: 'Grown-up-safe',
         hint: 'Some names sound very cute for little girls and boys. But what if they grew up? This option excludes names that are not adult-sounding enough for grown-ups.'
+      },
+      dictionary: {
+        label: 'No dictionary words',
+        hint: 'Some names may sound like dictionary words, which might cause confusion. This option excludes names that are too similar to words from a dictionary'
       }
     }
   },
@@ -118,6 +126,28 @@ export default {
     legal: 'Copyright (C) 2021 <br />Stefan Nürnberger<br />Grosshzg-Frdr-Str.99<br />66121 Saarbruecken <br />GERMANY',
     software: 'Built with',
     swhint: 'Quasar App development framework for desktop, Android and iOs.'
+  },
+  languages: {
+    en: 'English',
+    de: 'German',
+    fr: 'French',
+    it: 'Italian',
+    es: 'Spanish',
+    nl: 'Dutch',
+    sc: 'Scandinavian',
+    in: 'Indian',
+    he: 'Hebrew',
+    pt: 'Portuguese',
+    tr: 'Turkish',
+    ru: 'Russian',
+    la: 'Latin',
+    ir: 'Persian',
+    gr: 'Greek',
+    kr: 'Korea',
+    jp: 'Japanese',
+    za: 'African',
+    ph: 'Filipino',
+    cn: 'Chinese'
   }
 
 }

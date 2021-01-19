@@ -1,3 +1,6 @@
+import { LanguageIDs } from './babynames'
+import { BinarySettingsGroup, FilterSetting } from './bitstuff'
+
 export class Person {
   name = ''
   gender: string
@@ -41,14 +44,14 @@ export class Family {
   useSound = false
   sound: Array<SyllableSound>
 
-  filter = {
-    godly: false,
-    languages: 0
+  narrow: BinarySettingsGroup = {
+    languages: new FilterSetting(LanguageIDs)
   }
 
-  precautions = {
-    grandma: false,
-    grownup: false
+  precautions: BinarySettingsGroup = {
+    grandma: new FilterSetting(),
+    grownup: new FilterSetting(),
+    dictionary: new FilterSetting(LanguageIDs)
   }
 
   constructor () {
@@ -80,15 +83,6 @@ export class Family {
   public resetParents () {
     this.mother.name = ''
     this.father.name = ''
-  }
-
-  public resetPrecautions () {
-    this.precautions.grandma = false
-    this.precautions.grownup = false
-  }
-
-  public resetFilter () {
-    //
   }
 
   public addSibling () {

@@ -17,7 +17,7 @@
           <div class="q-mt-md text-center">
             <q-badge v-if="currentName.spellings.length > 1" floating color="transparent">{{index+1}}/{{currentName.spellings.length}}</q-badge>
             <name-spelling :name="s" :lastname="lastname" />
-            <q-avatar v-for="flag in s.origins" :key="flag" size="16px"><img :src="`/icons/flags/${flag}.png`" /></q-avatar>
+            <q-avatar v-for="flag in s.flagList" :key="flag" size="16px"><img :src="`/icons/flags/${flag}.png`" /></q-avatar>
           </div>
         </q-carousel-slide>
       </q-carousel>
