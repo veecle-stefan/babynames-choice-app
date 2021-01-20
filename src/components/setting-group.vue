@@ -19,15 +19,9 @@
   <q-card>
     <q-card-section>
       <slot>
-        <div class="row justify-start items-start content-start" v-if="settings != null">
-          <div class="col-12 col-md-4 col-sm-6" v-for="(setting, name) in settings" :key="name">
-            <div v-if="setting.bitMap._map">
-              <q-item-label header>
-                {{$t(`${tag}.${name}.label`)}}
-              </q-item-label>
-              <q-checkbox v-for="(val, key) in expandedSettings[name]" :key="val.ID" :label="$t(`${_subtag()}.${val.name}`)" :value="val.val" @input="updateBitmap(name, key, ...arguments)" />
-            </div>
-            <label-checkbox v-else :label="$t(`${tag}.${name}.label`)" :hint="$t(`${tag}.${name}.hint`)" v-model="setting.onOff" />
+        <div class="row q-col-gutter-none justify-start items-start content-start" v-if="settings != null">
+          <div v-for="setting in settingList()" :key="setting.name" :class="`col-12 ${setting.filter.hasMap() ? '' : 'col-md-4 col-sm-6'}`" >
+            <filter-toggle v-model="setting.filter" :name="setting.name" :tag="tag" :subtag="subtag" />
           </div>
         </div>
       </slot>
@@ -37,32 +31,19 @@
 </template>
 
 <script lang="ts">
-import { BinarySettings, BinarySettingsGroup } from 'src/babynames/bitstuff'
-import LabelCheckbox from './label-checkbox.vue'
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { BinarySettings, BinarySettingsGroup, FilterSetting } from 'src/babynames/bitstuff'
+import LabelledToggle from './labelled-toggle.vue'
+import BitmaskToggle from './bitmask-toggle.vue'
+import FilterToggle from './filter-toggle.vue'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
-class ChkboxSetting {
-  val: boolean
-  ID: number
+interface FilterArray {
+  filter: FilterSetting
   name: string
-
-  constructor (val: boolean, id: number, name: string) {
-    this.val = val
-    this.ID = id
-    this.name = name
-  }
-}
-
-interface SubSettingBits {
-  [key: string]: ChkboxSetting
-}
-
-interface SubSettingRef {
-  [settingname: string]: SubSettingBits
 }
 
 @Component({
-  components: { LabelCheckbox }
+  components: { LabelledToggle, BitmaskToggle, FilterToggle }
 })
 export default class SettingGroup extends Vue {
   @Prop({ required: true }) readonly tag!: string
@@ -72,58 +53,6 @@ export default class SettingGroup extends Vue {
   @Prop({ required: false, default: null }) readonly settings!: BinarySettingsGroup | null
 
   isOpen = false
-  expandedSettings: SubSettingRef = {}
-
-  constructor () {
-    super()
-    if (this.settings) {
-      // creates an empty expanded structure (to be filled with bitmap data)
-      for (const settingname in this.settings) {
-        const setting = this.settings[settingname]
-        if (setting.bitMap._map) {
-          this.expandedSettings[settingname] = {} // create new, empty object
-          for (const key in setting.bitMap._map) {
-            const num = parseInt(key)
-            this.expandedSettings[settingname][num] = new ChkboxSetting((setting.bitMap.bits & num) === num, num, setting.bitMap._map[key])
-          }
-        }
-      }
-    }
-  }
-
-  _subtag () {
-    return (this.subtag === '') ? this.tag : this.subtag
-  }
-
-  @Watch('settings', { deep: true, immediate: true })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  expandBitmaps (newV: BinarySettingsGroup, _oldV: BinarySettingsGroup) {
-    for (const settingname in newV) {
-      const setting = newV[settingname]
-      if (setting.bitMap._map) {
-        for (const key in setting.bitMap._map) {
-          const num = parseInt(key)
-          this.expandedSettings[settingname][num].val = (setting.bitMap.bits & num) === num
-        }
-      }
-    }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  updateBitmap (setname: string, key: string, newVal: boolean, ev: Event) {
-    if (this.settings) {
-      const bm = this.settings[setname].bitMap
-      const num = parseInt(key)
-      if (newVal) {
-        // set bit
-        bm.bits |= num
-      } else {
-        // unset bit
-        bm.bits &= ~num
-      }
-      this.expandedSettings[setname][key].val = newVal
-    }
-  }
 
   resetSettings () {
     this.isOpen = false
@@ -131,6 +60,16 @@ export default class SettingGroup extends Vue {
       BinarySettings.resetSettingsGroup(this.settings)
     }
     this.$emit('reset')
+  }
+
+  settingList (): FilterArray[] {
+    const list = [] as FilterArray[]
+    if (this.settings) {
+      for (const setname in this.settings) {
+        list.push({ filter: this.settings[setname], name: setname })
+      }
+    }
+    return list
   }
 
   summaryList (): string {

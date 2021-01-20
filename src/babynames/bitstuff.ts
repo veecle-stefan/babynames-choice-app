@@ -51,6 +51,10 @@ export class BitMap {
     if (withMap) this._map = withMap
   }
 
+  public hasMap (): boolean {
+    return this._map !== null
+  }
+
   public assignMap (m: BitmapLookup) {
     this._map = m
   }
@@ -136,6 +140,10 @@ export class FilterSetting {
 
   constructor (withMap?: BitmapLookup) {
     this.bitMap = new BitMap(withMap)
+  }
+
+  public hasMap (): boolean {
+    return this.bitMap.hasMap()
   }
 
   public allOn (): FilterSetting {

@@ -42,7 +42,7 @@
           <div>
             {{$t('wizard.sound.hint')}}
           </div>
-          <q-checkbox v-model="query.useSound" :label="$t('wizard.sound.use')" />
+          <q-toggle v-model="query.useSound" :label="$t('wizard.sound.use')" />
           <div class="fit row no-wrap justify-start items-start content-start">
             <vowel-selector v-for="s in query.sound" :key="s.syllable" v-model="s.sound" @change="query.useSound = true" :disable="!query.useSound" />
             <div class="column justify-center q-pa-md">
@@ -75,7 +75,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import Namecard from '../components/namecard.vue'
-import LabelCheckbox from '../components/label-checkbox.vue'
+import LabelledToggle from '../components/labelled-toggle.vue'
 import PersonInput from '../components/person-input.vue'
 import VowelSelector from '../components/vowel-selector.vue'
 import SyllablesSplitter from '../components/syllables-splitter.vue'
@@ -84,7 +84,7 @@ import SettingGroup from '../components/setting-group.vue'
 import { Family, PersonID, Syllables, SyllableSound, LanguageIDs } from '../babynames'
 
 @Component({
-  components: { Namecard, LabelCheckbox, PersonInput, VowelSelector, SyllablesSplitter, NamePicker, SettingGroup }
+  components: { Namecard, LabelledToggle, PersonInput, VowelSelector, SyllablesSplitter, NamePicker, SettingGroup }
 })
 export default class Sound extends Vue {
   query = new Family()
