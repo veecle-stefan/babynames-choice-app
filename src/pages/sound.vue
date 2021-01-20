@@ -59,9 +59,9 @@
         </div>
       </setting-group>
       <q-separator />
-      <setting-group tag="wizard.narrow" icon="filter_alt" :settings="query.narrow" />
+      <setting-group tag="wizard.narrow" subtag="languages" icon="filter_alt" :settings="query.narrow" />
       <q-separator />
-      <setting-group tag="wizard.precautions" icon="elderly" :settings="query.precautions" />
+      <setting-group tag="wizard.precautions" subtag="languages" icon="elderly" :settings="query.precautions" />
      </q-list>
     <div class="q-pa-md">
       <name-picker :family="query" />

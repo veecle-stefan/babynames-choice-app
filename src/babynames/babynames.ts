@@ -26,6 +26,14 @@ export const LanguageIDs: BitmapLookup = {
   524288: 'cn' // chinese
 }
 
+export const DictLanguageIDs: BitmapLookup = {
+  1: 'en', // English
+  2: 'de', // German
+  4: 'fr', // French
+  8: 'it', // Italian
+  16: 'es' // Spanish
+}
+
 export interface ToneSyllable {
   chars: string
   tone: number

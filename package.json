@@ -13,7 +13,7 @@
     "@capacitor/cli": "^2.4.5",
     "@capacitor/core": "^2.4.5",
     "@ionic/pwa-elements": "^3.0.2",
-    "@quasar/extras": "^1.9.13",
+    "@quasar/extras": "^1.9.14",
     "@types/cordova": "0.0.34",
     "@types/cordova-plugin-camera": "^2.4.0",
     "@vue/composition-api": "^0.6.4",

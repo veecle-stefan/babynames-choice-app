@@ -42,6 +42,7 @@ class ExpandedHandler {
 
 export class BitMap {
   bits = 0 // all off
+  private _default = 0
   _map: BitmapLookup | null = null
 
   indexed = new Proxy({}, new ExpandedHandler(this))
@@ -56,6 +57,32 @@ export class BitMap {
 
   public clear () {
     this.bits = 0
+  }
+
+  public saveDefault () {
+    this._default = this.bits
+  }
+
+  public reset () {
+    this.bits = this._default
+  }
+
+  /**
+   * Sets all the bits in the bitmap.
+   * If a map was specified, sets all the
+   * bits that can potentially be set.
+   * If no map is specified, sets all
+   * the bits
+   */
+  public allOn () {
+    if (this._map) {
+      for (const candidate in this._map) {
+        const num = parseInt(candidate)
+        this.bits |= num
+      }
+    } else {
+      this.bits = 0xffffffff
+    }
   }
 
   public first (): string {
@@ -110,6 +137,16 @@ export class FilterSetting {
   constructor (withMap?: BitmapLookup) {
     this.bitMap = new BitMap(withMap)
   }
+
+  public allOn (): FilterSetting {
+    this.bitMap.allOn()
+    return this
+  }
+
+  public saveDefault (): FilterSetting {
+    this.bitMap.saveDefault()
+    return this
+  }
 }
 
 export class BinarySettingsGroup {
@@ -126,7 +163,7 @@ export class BinarySettings {
     for (const settingName in group) {
       const setting = group[settingName]
       setting.onOff = false
-      setting.bitMap.clear()
+      setting.bitMap.reset()
     }
   }
 }

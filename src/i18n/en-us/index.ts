@@ -72,7 +72,8 @@ export default {
       title: 'Narrow down',
       languages: {
         label: 'Languages',
-        hint: 'Only show names common in the following languages'
+        hint: 'Only show names common in the following languages',
+        sub: '@:languages'
       }
     },
     precautions: {
@@ -143,7 +144,7 @@ export default {
     la: 'Latin',
     ir: 'Persian',
     gr: 'Greek',
-    kr: 'Korea',
+    kr: 'Korean',
     jp: 'Japanese',
     za: 'African',
     ph: 'Filipino',

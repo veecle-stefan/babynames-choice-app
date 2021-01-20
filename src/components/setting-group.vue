@@ -20,12 +20,12 @@
     <q-card-section>
       <slot>
         <div class="row justify-start items-start content-start" v-if="settings != null">
-          <div class="col-12 col-md-6 col-sm-4" v-for="(setting, name) in settings" :key="name">
+          <div class="col-12 col-md-4 col-sm-6" v-for="(setting, name) in settings" :key="name">
             <div v-if="setting.bitMap._map">
               <q-item-label header>
                 {{$t(`${tag}.${name}.label`)}}
               </q-item-label>
-              <q-checkbox v-for="(val, key) in setting.bitMap._map" :key="key" :label="val" v-model="expandedSettings[name][key]" />
+              <q-checkbox v-for="(val, key) in expandedSettings[name]" :key="val.ID" :label="$t(`${_subtag()}.${val.name}`)" :value="val.val" @input="updateBitmap(name, key, ...arguments)" />
             </div>
             <label-checkbox v-else :label="$t(`${tag}.${name}.label`)" :hint="$t(`${tag}.${name}.hint`)" v-model="setting.onOff" />
           </div>
@@ -41,8 +41,20 @@ import { BinarySettings, BinarySettingsGroup } from 'src/babynames/bitstuff'
 import LabelCheckbox from './label-checkbox.vue'
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 
+class ChkboxSetting {
+  val: boolean
+  ID: number
+  name: string
+
+  constructor (val: boolean, id: number, name: string) {
+    this.val = val
+    this.ID = id
+    this.name = name
+  }
+}
+
 interface SubSettingBits {
-  [key: string]: boolean
+  [key: string]: ChkboxSetting
 }
 
 interface SubSettingRef {
@@ -54,6 +66,7 @@ interface SubSettingRef {
 })
 export default class SettingGroup extends Vue {
   @Prop({ required: true }) readonly tag!: string
+  @Prop({ required: false, default: '' }) readonly subtag!: string
   @Prop({ required: true }) readonly icon!: string
   @Prop({ required: false, default: function () { return [] as string[] } }) readonly summary!: string[]
   @Prop({ required: false, default: null }) readonly settings!: BinarySettingsGroup | null
@@ -64,42 +77,51 @@ export default class SettingGroup extends Vue {
   constructor () {
     super()
     if (this.settings) {
+      // creates an empty expanded structure (to be filled with bitmap data)
       for (const settingname in this.settings) {
         const setting = this.settings[settingname]
         if (setting.bitMap._map) {
-          this.expandedSettings[settingname] = {}
+          this.expandedSettings[settingname] = {} // create new, empty object
           for (const key in setting.bitMap._map) {
-            this.expandedSettings[settingname][key] = false
+            const num = parseInt(key)
+            this.expandedSettings[settingname][num] = new ChkboxSetting((setting.bitMap.bits & num) === num, num, setting.bitMap._map[key])
           }
         }
       }
     }
   }
 
-  readVal (name: string, key: string): boolean {
-    console.log(`Read setting ${name} index ${key}`)
-    return false
+  _subtag () {
+    return (this.subtag === '') ? this.tag : this.subtag
   }
 
-  onTest () {
-    console.log('Something changed')
-  }
-
-  @Watch('expandedSettings', { deep: true })
+  @Watch('settings', { deep: true, immediate: true })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onSubSettingsChanged (newV: SubSettingRef, _oldV: SubSettingRef) {
-    if (this.settings) {
-      for (const setname in newV) {
-        const bm = this.settings[setname].bitMap
-        bm.bits = 0
-        for (const key in newV[setname]) {
-          const val = newV[setname][key]
-          if (val) {
-            const num = parseInt(key)
-            bm.bits |= num
-          }
+  expandBitmaps (newV: BinarySettingsGroup, _oldV: BinarySettingsGroup) {
+    for (const settingname in newV) {
+      const setting = newV[settingname]
+      if (setting.bitMap._map) {
+        for (const key in setting.bitMap._map) {
+          const num = parseInt(key)
+          this.expandedSettings[settingname][num].val = (setting.bitMap.bits & num) === num
         }
       }
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  updateBitmap (setname: string, key: string, newVal: boolean, ev: Event) {
+    if (this.settings) {
+      const bm = this.settings[setname].bitMap
+      const num = parseInt(key)
+      if (newVal) {
+        // set bit
+        bm.bits |= num
+      } else {
+        // unset bit
+        bm.bits &= ~num
+      }
+      this.expandedSettings[setname][key].val = newVal
     }
   }
 

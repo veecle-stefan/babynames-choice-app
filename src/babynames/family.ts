@@ -1,4 +1,4 @@
-import { LanguageIDs } from './babynames'
+import { DictLanguageIDs, LanguageIDs } from './babynames'
 import { BinarySettingsGroup, FilterSetting } from './bitstuff'
 
 export class Person {
@@ -45,13 +45,13 @@ export class Family {
   sound: Array<SyllableSound>
 
   narrow: BinarySettingsGroup = {
-    languages: new FilterSetting(LanguageIDs)
+    languages: new FilterSetting(LanguageIDs).allOn().saveDefault()
   }
 
   precautions: BinarySettingsGroup = {
     grandma: new FilterSetting(),
     grownup: new FilterSetting(),
-    dictionary: new FilterSetting(LanguageIDs)
+    dictionary: new FilterSetting(DictLanguageIDs)
   }
 
   constructor () {
