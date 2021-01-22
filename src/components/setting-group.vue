@@ -99,7 +99,22 @@ export default class SettingGroup extends Vue {
     if (this.settings) {
       return Object.entries(this.settings).reduce((list, [name, setting]) => {
         if (setting.onOff) {
-          list.push(this.$t(`${this.tag}.${name}.label`).toString())
+          let title = this.$t(`${this.tag}.${name}.label`).toString()
+          // add sub-selected if possible
+          if (setting.bitMap._map) {
+            const sublist: Array<string> = []
+            for (const key in setting.bitMap._map) {
+              const val = setting.bitMap._map[key]
+              const num = parseInt(key)
+              if (setting.bitMap.isDifferent(num)) {
+                sublist.push(val)
+              }
+            }
+            if (sublist.length > 0) {
+              title += ` (${sublist.join(',')})`
+            }
+          }
+          list.push(title)
         }
         return list
       }, [] as string[])

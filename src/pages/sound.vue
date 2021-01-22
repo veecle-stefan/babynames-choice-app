@@ -1,6 +1,6 @@
 <template>
   <q-page>
-     <q-list bordered class="bg-dark" dense>
+     <q-list bordered class="settings" dense>
        <setting-group tag="wizard.familyname" @reset="query.resetFamilyName()" icon="loyalty" :summary="[query.familyname.name]">
           <div class="row">
             <div class="col-12">
@@ -141,5 +141,11 @@ export default class Sound extends Vue {
 </script>
 
 <style lang="scss">
-
+.settings {
+  background: rgba( 255, 255, 255, 0.10 );
+  box-shadow: 0 8px 50px 0 rgba(66, 63, 45, 0.57);
+  backdrop-filter: blur( 15px ) grayscale(.6);
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.2 );
+}
 </style>

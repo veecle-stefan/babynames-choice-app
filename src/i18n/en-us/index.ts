@@ -72,8 +72,7 @@ export default {
       title: 'Narrow down',
       languages: {
         label: 'Languages',
-        hint: 'Only show names common in the following languages',
-        sub: '@:languages'
+        hint: 'Only show names common in the following languages'
       }
     },
     precautions: {
@@ -126,7 +125,7 @@ export default {
     imprint: 'Imprint',
     legal: 'Copyright (C) 2021 <br />Stefan Nürnberger<br />Grosshzg-Frdr-Str.99<br />66121 Saarbruecken <br />GERMANY',
     software: 'Built with',
-    swhint: 'Quasar App development framework for desktop, Android and iOs.'
+    swdesc: 'Quasar App development framework for Desktop, Android and iOS.'
   },
   languages: {
     en: 'English',

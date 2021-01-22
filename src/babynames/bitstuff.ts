@@ -71,6 +71,31 @@ export class BitMap {
     this.bits = this._default
   }
 
+  public setBit (bit: number) {
+    this.bits |= bit
+  }
+
+  public clearBit (bit: number) {
+    this.bits &= ~bit
+  }
+
+  /**
+   * Checks wether a given bit (pattern) is currently active
+   * @param bit bits to check
+   */
+  public isSet (bit: number): boolean {
+    return (this.bits & bit) === bit
+  }
+
+  /**
+   * Checks whether the given bit (pattern) is different
+   * from the default (reset) value
+   * @param bit bits to check
+   */
+  public isDifferent (bit: number): boolean {
+    return ((this._default & bit) !== (this.bits & bit))
+  }
+
   /**
    * Sets all the bits in the bitmap.
    * If a map was specified, sets all the

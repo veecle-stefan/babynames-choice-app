@@ -37,7 +37,7 @@ export default class BitmaskToggle extends Vue {
       for (const key in this.bitmask._map) {
         const num = parseInt(key)
         const val = this.bitmask._map[key]
-        const checked = (this.bitmask.bits & num) === num
+        const checked = this.bitmask.isSet(num)
         this.$set(this.expandedBitList, key, new ChkboxSetting(
           checked,
           num,
@@ -62,9 +62,10 @@ export default class BitmaskToggle extends Vue {
   updateBitmap (el: ChkboxSetting, newVal: boolean, ev: Event) {
     if (newVal) {
       // set bit
-      this.bitmask.bits |= el.key
+      this.bitmask.setBit(el.key)
     } else {
       // unset bit
+      this.bitmask.clearBit(el.key)
       this.bitmask.bits &= ~el.key
     }
     this.expandedBitList[el.key].val = newVal
