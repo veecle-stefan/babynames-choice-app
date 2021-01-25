@@ -154,7 +154,7 @@ class LanguageFilter extends NameFilter {
 
   public filterFunc (item: BabyName): boolean {
     for (const s of item.spellings) {
-      if ((s.origins.bits & this.wantedLangs) !== 0) {
+      if ((s.origins & this.wantedLangs) !== 0) {
         return true // found a spelling in the wanted langue
       }
     }

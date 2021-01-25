@@ -83,11 +83,10 @@ export class RawSpelling {
 
   gender = '';
 
-  @Type(() => BitMap)
-  origins = new BitMap(LanguageIDs)
+  origins = 0
 
   public get oneFlag (): string {
-    const msb = this.origins.MSB()
+    const msb = BitMap.MSB(this.origins)
     if (msb !== 0) {
       return LanguageIDs[msb]
     } else {
@@ -96,7 +95,7 @@ export class RawSpelling {
   }
 
   public get flagList (): string[] {
-    return BitMap.map(this.origins.bits, LanguageIDs)
+    return BitMap.map(this.origins, LanguageIDs)
   }
 }
 
