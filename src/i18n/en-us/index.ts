@@ -17,7 +17,9 @@ export default {
     spelling: 'Spelling'
   },
   wizard: {
-    eliminated: 'ruled out {num} names',
+    all: 'All {num} names',
+    eliminated: 'Ruled out {num} names',
+    found: 'Found {num} names',
     brother: 'Brother',
     sister: 'Sister',
     unisex: 'Unisex',
