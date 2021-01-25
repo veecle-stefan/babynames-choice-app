@@ -37,6 +37,8 @@ export class PersonID {
 }
 
 export class Family {
+  desireGender = false
+  desiredGender = 'u'
   familyname: Person
   mother = new Person('f')
   father = new Person('m')
@@ -69,6 +71,11 @@ export class Family {
     this.addSyllable(SyllableVowel.Low)
     this.addSyllable(SyllableVowel.High)
     this.addSyllable(SyllableVowel.Low)
+  }
+
+  public resetGender () {
+    this.desireGender = false
+    this.desiredGender = 'u'
   }
 
   public resetSiblings () {

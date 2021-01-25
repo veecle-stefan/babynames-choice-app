@@ -1,15 +1,15 @@
 <template>
   <div class="q-pa-md column justify-center items-center">
-    <q-card flat bordered class="result-info">
+    <div class="result-info">
       <q-spinner v-if="calculating"
         color="primary"
-        size="3em"
+        size="50px"
       />
       <q-card-section v-else>
-        <div class="text-h6" v-if="nameList.length < totalCount">{{$t('wizard.found', { num: nameList.length })}} {{$t('wizard.eliminated', { num: totalCount - nameList.length })}}</div>
-        <div class="text-h6" v-else>{{$t('wizard.all', { num: nameList.length })}}</div>
+        <div v-if="nameList.length < totalCount">{{$t('wizard.found', { num: nameList.length })}} {{$t('wizard.eliminated', { num: totalCount - nameList.length })}}</div>
+        <div v-else>{{$t('wizard.all', { num: nameList.length })}}</div>
       </q-card-section>
-    </q-card>
+    </div>
     <q-intersection
       v-for="n in nameList" :key="n.ID"
       class="newitem"
@@ -64,6 +64,15 @@ export default class NamePicker extends Vue {
 </script>
 
 <style lang="scss">
+.result-info {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  color: $primary;
+  background-image: radial-gradient(rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+  background-size: contain;
+  background-blend-mode: darken;
+}
+
 .newitem {
   width: 300px;
   margin: 20px;

@@ -54,6 +54,14 @@ export default {
       placeholder: 'e.g. John',
       hint: 'The father\'s first name'
     },
+    desiredgender: {
+      title: 'Gender',
+      label: 'Limit search to specific gender',
+      hint: 'Do you prefer a name for a boy or a girl? Or maybe a unisex name?',
+      male: 'Boy\'s name',
+      female: 'Girl\'s name',
+      unisex: 'Unisex name'
+    },
     sibling: {
       title: 'Siblings',
       add: 'Add another sibling',

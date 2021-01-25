@@ -23,6 +23,11 @@
         </div>
       </setting-group>
       <q-separator />
+      <setting-group tag="wizard.desiredgender" @reset="query.resetGender()" icon="wc" :summary="desiredGender()">
+        <labelled-toggle :label="$t('wizard.desiredgender.label')" :hint="$t('wizard.desiredgender.hint')" v-model="query.desireGender" />
+        <gender-picker v-model="query.desiredGender" v-show="query.desireGender"/>
+      </setting-group>
+      <q-separator />
       <setting-group tag="wizard.sibling" @reset="query.resetSiblings()" icon="person_add" :summary="query.siblings.map(s => s.person.name)">
         <div class="row wrap items-center">
           <div class="col-12">
@@ -80,11 +85,12 @@ import PersonInput from '../components/person-input.vue'
 import VowelSelector from '../components/vowel-selector.vue'
 import SyllablesSplitter from '../components/syllables-splitter.vue'
 import NamePicker from '../components/name-picker.vue'
+import GenderPicker from '../components/gender-picker.vue'
 import SettingGroup from '../components/setting-group.vue'
 import { Family, PersonID, Syllables, SyllableSound, LanguageIDs } from '../babynames'
 
 @Component({
-  components: { Namecard, LabelledToggle, PersonInput, VowelSelector, SyllablesSplitter, NamePicker, SettingGroup }
+  components: { Namecard, LabelledToggle, PersonInput, VowelSelector, SyllablesSplitter, NamePicker, SettingGroup, GenderPicker }
 })
 export default class Sound extends Vue {
   query = new Family()
@@ -93,6 +99,21 @@ export default class Sound extends Vue {
 
   removeSibling (idx: number) {
     this.query.siblings.splice(idx, 1)
+  }
+
+  desiredGender (): string[] {
+    if (this.query.desireGender) {
+      switch (this.query.desiredGender) {
+        case 'm':
+          return [this.$t('wizard.desiredgender.male').toString()]
+        case 'f':
+          return [this.$t('wizard.desiredgender.female').toString()]
+        default:
+          return [this.$t('wizard.desiredgender.unisex').toString()]
+      }
+    } else {
+      return ['']
+    }
   }
 
   checkDoubleName (list: PersonID[], p: PersonID): boolean {

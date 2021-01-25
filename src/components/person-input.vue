@@ -9,26 +9,18 @@
               <q-btn dense icon="person_remove" @click="$emit('remove')" color="primary" />
     </template>
 </q-input>
-<q-btn-toggle v-if="editable"
-  push
-  dense
-  v-model="_person.gender"
-  rounded
-  :options="genderOptions"
-  >
-    <template v-for="o in genderOptions" v-slot:[o.slot]>
-      <q-img :key="o.slot" class="genderpicker" :src="`/icons/${o.slot}.png`" @click="_person.gender = o.value" />
-    </template>
-  </q-btn-toggle>
-
+<gender-picker v-if="editable" v-model="_person.gender" />
 </div>
 </template>
 
 <script lang="ts">
 import { Person } from 'src/babynames'
 import { Vue, Component, Prop, ModelSync } from 'vue-property-decorator'
+import GenderPicker from './gender-picker.vue'
 
-@Component
+@Component({
+  components: { GenderPicker }
+})
 export default class PersonInput extends Vue {
   @Prop({ required: true }) readonly labels!: string
   @Prop({ required: false, default: '' }) readonly suffix!: string
@@ -36,12 +28,6 @@ export default class PersonInput extends Vue {
   @Prop({ required: false, default: false }) readonly editable!: boolean
   @Prop({ required: false, default: false }) readonly error!: boolean
   @ModelSync('value', 'input', { type: Person }) readonly _person!: Person
-
-  genderOptions = [
-    { value: 'f', slot: 'genderf' },
-    { value: 'u', slot: 'genderu' },
-    { value: 'm', slot: 'genderm' }
-  ]
 
   personIcon (): string {
     if (this.editable) {
@@ -64,11 +50,6 @@ export default class PersonInput extends Vue {
 
 .person {
   width: 70px;
-}
-
-.genderpicker {
-  width: 24px;
-  height: 24px;
 }
 
 .input-hint {
