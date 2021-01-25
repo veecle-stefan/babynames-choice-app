@@ -42,7 +42,7 @@ class ExpandedHandler {
 
 export class BitMap {
   bits = 0 // all off
-  private _default = 0
+  _default = 0
   _map: BitmapLookup | null = null
 
   indexed = new Proxy({}, new ExpandedHandler(this))
@@ -103,7 +103,7 @@ export class BitMap {
    * If no map is specified, sets all
    * the bits
    */
-  public allOn () {
+  public setAllOn () {
     if (this._map) {
       for (const candidate in this._map) {
         const num = parseInt(candidate)
@@ -171,9 +171,18 @@ export class FilterSetting {
     return this.bitMap.hasMap()
   }
 
-  public allOn (): FilterSetting {
-    this.bitMap.allOn()
+  public setAllOn (): FilterSetting {
+    this.bitMap.setAllOn()
     return this
+  }
+
+  public getEquivBits (): number {
+    if (this.onOff) {
+      return this.bitMap.bits
+    } else {
+      // it's off, use the default
+      return this.bitMap._default
+    }
   }
 
   public saveDefault (): FilterSetting {

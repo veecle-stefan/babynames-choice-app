@@ -13,9 +13,11 @@ export default {
   names: {
     keywords: 'Meaning',
     dictionarywords: 'Similar words',
-    related: 'Related names'
+    related: 'Related names',
+    spelling: 'Spelling'
   },
   wizard: {
+    eliminated: 'ruled out {num} names',
     brother: 'Brother',
     sister: 'Sister',
     unisex: 'Unisex',
@@ -83,7 +85,7 @@ export default {
         hint: 'Some names are a bit too modern for the taste of your parents, so your child\'s grandparents. Maybe you fear they mispronounce it or they never get the spelling right. This option excludes names with difficult pronunciation or unclear spelling.'
       },
       grownup: {
-        label: 'Grown-up-safe',
+        label: 'Adult-suitable',
         hint: 'Some names sound very cute for little girls and boys. But what if they grew up? This option excludes names that are not adult-sounding enough for grown-ups.'
       },
       dictionary: {

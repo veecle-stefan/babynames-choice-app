@@ -7,16 +7,21 @@
   <template v-slot:header>
     <q-item-section avatar><q-avatar :icon="icon" /></q-item-section>
     <q-item-section>
+      <div>
       {{$t(`${tag}.title`)}}
       <span class="changed-state" v-show="showSummary()">
         {{summaryList()}}
+      </span>
+      </div>
+      <span class="reduced-effect" v-show="isOpen && (eliminated > 0)">
+        {{$t('wizard.eliminated', {num: eliminated})}}
       </span>
     </q-item-section>
     <q-item-section side>
       <q-btn dense flat icon="settings_backup_restore" @click.stop="resetSettings()" />
       </q-item-section>
   </template>
-  <q-card>
+  <q-card class="settings-back">
     <q-card-section>
       <slot>
         <div class="row q-col-gutter-none justify-start items-start content-start" v-if="settings != null">
@@ -49,6 +54,7 @@ export default class SettingGroup extends Vue {
   @Prop({ required: true }) readonly tag!: string
   @Prop({ required: false, default: '' }) readonly subtag!: string
   @Prop({ required: true }) readonly icon!: string
+  @Prop({ required: false, default: 0 }) readonly eliminated!: number
   @Prop({ required: false, default: function () { return [] as string[] } }) readonly summary!: string[]
   @Prop({ required: false, default: null }) readonly settings!: BinarySettingsGroup | null
 
@@ -129,5 +135,16 @@ export default class SettingGroup extends Vue {
 .changed-state {
   color: $primary;
   display: inline;
+  margin-left: 20px;
+}
+
+.reduced-effect {
+  color: $secondary;
+  display: inline;
+  float: right;
+}
+
+.settings-back {
+  background: rgba(0, 0, 0, 0.1);
 }
 </style>

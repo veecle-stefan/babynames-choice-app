@@ -45,7 +45,7 @@ export class Family {
   sound: Array<SyllableSound>
 
   narrow: BinarySettingsGroup = {
-    languages: new FilterSetting(LanguageIDs).allOn().saveDefault()
+    languages: new FilterSetting(LanguageIDs).setAllOn().saveDefault()
   }
 
   precautions: BinarySettingsGroup = {

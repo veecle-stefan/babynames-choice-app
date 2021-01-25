@@ -15,7 +15,7 @@
       >
         <q-carousel-slide v-for="(s, index) in orderedSpellings()" :key="s.syllables.formattedName" :name="`s${index}`" class="column no-wrap flex-center">
           <div class="q-mt-md text-center">
-            <q-badge v-if="currentName.spellings.length > 1" floating color="transparent">{{index+1}}/{{currentName.spellings.length}}</q-badge>
+            <q-badge v-if="currentName.spellings.length > 1" floating color="transparent">{{$t('names.spelling')}} {{index+1}}/{{currentName.spellings.length}}</q-badge>
             <name-spelling :name="s" :lastname="lastname" />
             <q-avatar v-for="flag in s.flagList" :key="flag" size="16px"><img :src="`/icons/flags/${flag}.png`" /></q-avatar>
           </div>
@@ -111,7 +111,7 @@ export default class Namecard extends Vue {
 
 .my-card {
   background: rgba( 255, 255, 255, 0.10 );
-  box-shadow: 0 8px 50px 0 rgba(66, 63, 45, 0.57);
+  box-shadow: 0 8px 50px 0 rgba(172, 171, 171, 0.3);
   backdrop-filter: blur( 15px ) grayscale(.6);
   border-radius: 10px;
   border: 1px solid rgba( 255, 255, 255, 0.2 );
