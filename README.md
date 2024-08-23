@@ -1,6 +1,12 @@
 # Baby Names (babynames-app)
+I wrote this help to support in finding appropriate names for newborns. I hate the long lists of alphabetic names one finds on the Internet. So I programed how I want to choose a name for a lifetime:
+- supports phonetic selection (how does it sound?)
+- supports "Can granny pronounce it or will she butcher her/his name?"
+- supports (de-)selecting names that don't exist in secific languages -> Our children are international and will travel and live abroad
 
-Easily find baby names
+This is a Quasar app (runs in the browser and on Android/iOS).
+
+
 
 ## Install the dependencies
 ```bash
